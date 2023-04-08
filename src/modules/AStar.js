@@ -29,13 +29,13 @@ function astar(start, goal, adjacency) {
 
       const tentativeG = g.get(current) + adjacency[current.id][neighbor.id];
 
-      if (!open.list.includes(neighbor) || tentativeG < g.get(neighbor)) {
+      if (!open.includes(neighbor) || tentativeG < g.get(neighbor)) {
         g.set(neighbor, tentativeG);
         f.set(neighbor, g.get(neighbor) + heuristic(neighbor, goal));
         neighbor.priority = f.get(neighbor);
         neighbor.parent = current;
 
-        if (!open.list.includes(neighbor)) {
+        if (!open.includes(neighbor)) {
           open.enqueue(neighbor);
         }
       }
