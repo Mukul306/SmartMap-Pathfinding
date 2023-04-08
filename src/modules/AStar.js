@@ -37,6 +37,8 @@ function astar(start, goal, adjacency) {
 
         if (!open.includes(neighbor)) {
           open.enqueue(neighbor);
+        } else {
+          open.updatePriority(neighbor, neighbor.priority);
         }
       }
     }
