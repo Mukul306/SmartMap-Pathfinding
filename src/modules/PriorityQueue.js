@@ -25,9 +25,11 @@ class PriorityQueue {
   }
 
   updatePriority(node, priority) {
-    const index = this.queue.indexOf(node);
-    this.queue[index].priority = priority;
-    this.queue.sort((a, b) => a.priority - b.priority);
+    const index = this.queue.findIndex(elmt => elmt.id === node.id);
+    if (index !== -1) {
+      this.queue[index].priority = priority;
+      this.queue.sort((a, b) => a.priority - b.priority);
+    }
   }
 }
 
