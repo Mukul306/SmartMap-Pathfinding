@@ -3,14 +3,14 @@ const astar = require('./modules/AStar');
 const ucs = require('./modules/UCS');
 
 // Define the graph
-const nodeA = new Node(0, null, {longitude: 0, latitude: 0});
-const nodeB = new Node(1, null, {longitude: 0, latitude: 1});
-const nodeC = new Node(2, null, {longitude: 0, latitude: 2});
-const nodeD = new Node(3, null, {longitude: 1, latitude: 1});
-const nodeE = new Node(4, null, {longitude: 1, latitude: 2});
-const nodeF = new Node(5, null, {longitude: 2, latitude: 2});
-const nodeG = new Node(6, null, {longitude: 1, latitude: 3});
-const nodeH = new Node(7, null, {longitude: 2, latitude: 3});
+const nodeA = new Node(0, null, {x: 0, y: 0});
+const nodeB = new Node(1, null, {x: 0, y: 1});
+const nodeC = new Node(2, null, {x: 0, y: 2});
+const nodeD = new Node(3, null, {x: 1, y: 1});
+const nodeE = new Node(4, null, {x: 1, y: 2});
+const nodeF = new Node(5, null, {x: 2, y: 2});
+const nodeG = new Node(6, null, {x: 1, y: 3});
+const nodeH = new Node(7, null, {x: 2, y: 3});
 
 nodeA.neighbors = [nodeB];
 nodeB.neighbors = [nodeA, nodeC, nodeD];

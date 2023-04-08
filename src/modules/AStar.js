@@ -67,8 +67,16 @@ function haversineDistance(a, b) {
   return distance;
 }
 
+function euclideanDistance(a, b) {
+  const x = a.position.x - b.position.x;
+  const y = a.position.y - b.position.y;
+
+  return Math.sqrt(x ** 2 + y ** 2);
+}
+
 function heuristic(a, b) {
-  return haversineDistance(a, b);
+  // return haversineDistance(a, b);
+  return euclideanDistance(a, b);
 }
 
 function reconstructPath(goal) {
