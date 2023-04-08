@@ -1,6 +1,6 @@
 const Node = require('./modules/Node');
 const astar = require('./modules/AStar');
-// const { findAStarPath } = require('./modules/AStarQueue');
+const ucs = require('./modules/UCS');
 
 // Define the graph
 const nodeA = new Node(0, null, {longitude: 0, latitude: 0});
@@ -44,15 +44,17 @@ const adjacency = [
                1
 */
 
-// Find the shortest path from nodeA to nodeG using the A* algorithm
-// const path = findAStarPath(adjacency, nodeA, nodeG);
-// Usage
-const path = astar(nodeA, nodeG, adjacency);
+// Find the shortest path from nodeA to nodeG using the A* and UCS algorithm
+const astarPath = astar(nodeA, nodeG, adjacency);
+const ucsPath = ucs(nodeA, nodeG, adjacency);
 
 // Print the path
-if (path !== null) {
-    console.log("Shortest path from nodeA to nodeG: ");
-    console.log(path.map(node => node.id).join(' -> '));
+if (astar !== null && ucsPath !== null) {
+    console.log("Shortest path from nodeA to nodeG with A*: ");
+    console.log(astarPath.map(node => node.id).join(' -> '));
+    console.log();
+    console.log("Shortest path from nodeA to nodeG with UCS: ");
+    console.log(ucsPath.map(node => node.id).join(' -> '));
 } else {
     console.log("No path found");
 }

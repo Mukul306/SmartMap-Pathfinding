@@ -4,19 +4,8 @@ class PriorityQueue {
   }
   
   enqueue(node) {
-    let added = false;
-    
-    for (let i = 0; i < this.queue.length; i++) {
-      if (node.priority < this.queue[i].priority) {
-        this.queue.splice(i, 0, node);
-        added = true;
-        break;
-      }
-    }
-    
-    if (!added) {
-      this.queue.push(node);
-    }
+    this.queue.push(node);
+    this.queue.sort((a, b) => a.priority - b.priority);
   }
   
   dequeue() {
@@ -33,6 +22,12 @@ class PriorityQueue {
 
   get length() {
     return this.queue.length;
+  }
+
+  updatePriority(node, priority) {
+    const index = this.queue.indexOf(node);
+    this.queue[index].priority = priority;
+    this.queue.sort((a, b) => a.priority - b.priority);
   }
 }
 
