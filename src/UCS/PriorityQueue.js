@@ -8,19 +8,29 @@ export class PriorityQueue {
     }
 
     enqueue(elmt) {
-        if (this.isEmpty()) {
-            this.list.push(elmt)
-        }
+        const index = this.list.findIndex((item) => item.distFromStart > elmt.distFromStart);
+        if (index === -1) {
+            this.list.push(elmt);
+        } 
         else {
-            let i = 0
-            const length = this.list.length
-            for (i; i < length; i++) {
-                if (this.list[i].distFromStart > elmt.distFromStart) {
-                    break
-                }
-            }
-            this.list.splice(i, 0, elmt)
+            this.list.splice(index, 0, elmt);
         }
+        // if (this.isEmpty()) {
+        //     this.list.push(elmt)
+        // }
+        // else {
+        //     let i = 0
+        //     const length = this.list.length
+        //     for (i; i < length; i++) {
+        //         // if (this.list[i].distFromStart > elmt.distFromStart) {
+        //         //     break
+        //         // }
+        //         if (this.list[i].priority > elmt.priority) {
+        //             break
+        //         }
+        //     }
+        //     this.list.splice(i, 0, elmt)
+        // }
     }
 
     dequeue() {
@@ -39,22 +49,23 @@ export class PriorityQueue {
 }
 
 export class TreeNode {
-    constructor(parent, name, location, distFromStart) {
+    constructor(parent, id, name, location, distFromStart) {
         this.parent = parent
+        this.id = id
         this.name = name
         this.location = location
         this.distFromStart = distFromStart
     }
 
     printInfo() {
-        console.log(this.name, this.location)
+        console.log(this.id, this.name, this.location)
     }
 
     getPathFromRoot() {
         const path = []
         let currentNode = this
         while (currentNode !== null) {
-            path.unshift(currentNode)
+            path.unshift(currentNode.name)
             currentNode = currentNode.parent
         }
         return path
@@ -70,8 +81,8 @@ export class TreeNode {
 }
 
 export class UCSTreeNode extends TreeNode {
-    constructor(parent, name, location, distFromStart) {
-        super(parent, name, location, distFromStart)
+    constructor(parent, id, name, location, distFromStart) {
+        super(parent, id, name, location, distFromStart)
     }
 
     get priority() {
@@ -88,12 +99,12 @@ export class AstarTreeNode extends TreeNode {
 // // TESTING PRIORITY QUEUE AND TREE NODE
 
 // // Node construction
-const node1 = new UCSTreeNode(null, "a", {x: 4.4, y: 5.5}, 10)
-const node2 = new UCSTreeNode(node1, "b", {x: 6.1, y: 9.7}, 2)
-const node3 = new UCSTreeNode(node1, "c", {x: 6.1, y: 9.7}, 7)
-const node4 = new UCSTreeNode(node2, "d", {x: 6.1, y: 9.7}, 1)
+// const node1 = new UCSTreeNode(null, "a", {x: 4.4, y: 5.5}, 10)
+// const node2 = new UCSTreeNode(node1, "b", {x: 6.1, y: 9.7}, 2)
+// const node3 = new UCSTreeNode(node1, "c", {x: 6.1, y: 9.7}, 7)
+// const node4 = new UCSTreeNode(node2, "d", {x: 6.1, y: 9.7}, 1)
 
-console.log(node1.priority)
+// console.log(node1.priority)
 
 
 
