@@ -18,7 +18,7 @@ function UCS(matrix, start, finish, nodeNames) {
     do {
         for (let i = 0; i < nodeCount; i++) {
             const distance = matrix[expandNodeIdx][i]
-            if (i !== expandNodeIdx && distance !== Infinity) {
+            if (/* i !== expandNodeIdx && */ distance !== 0) {
                 let name = nodeNames[i]
                 let distFromStart = expandNode.distFromStart + distance
                 const liveNode = new TreeNode(expandNode, name, null, distFromStart)
@@ -29,41 +29,62 @@ function UCS(matrix, start, finish, nodeNames) {
         expandNode = prioqueue.dequeue()
         expandNodeIdx = nodeNames.indexOf(expandNode.name)
     }
-    while (expandNode.name !== nodeNames[finish] && !prioqueue.isEmpty())
+    while (expandNode.name !== nodeNames[finish])
     
-    const routeList = []
-    let routeNode = expandNode
-    while (routeNode != null) {
-        routeList.unshift(routeNode.name)
-        routeNode = routeNode.parent
-    }
+    const routeList = expandNode.getPathFromRoot()
+    // let routeNode = expandNode
+    // while (routeNode != null) {
+    //     routeList.unshift(routeNode.name)
+    //     routeNode = routeNode.parent
+    // }
 
     return routeList
 }
 
 
 const testMatrix1 = [
-                    [0, 6, Infinity, Infinity, Infinity, 3, Infinity, Infinity, Infinity, Infinity], 
-                    [6, 0, 3, 2, Infinity, Infinity, Infinity, Infinity, Infinity, Infinity], 
-                    [Infinity, 3, 0, 1, 5, Infinity, Infinity, Infinity, Infinity, Infinity],
-                    [Infinity, 2, 1, 0, 8, Infinity, Infinity, Infinity, Infinity, Infinity],
-                    [Infinity, Infinity, 5, 8, 0, Infinity, Infinity, Infinity, 5, 5], 
-                    [3, Infinity, Infinity, Infinity, Infinity, 0, 1, 7, Infinity, Infinity],
-                    [Infinity, Infinity, Infinity, Infinity, Infinity, 1, 0, Infinity, 3, Infinity],
-                    [Infinity, Infinity, Infinity, Infinity, Infinity, 7, Infinity, 0, 2, Infinity],
-                    [Infinity, Infinity, Infinity, Infinity, 5, Infinity, 3, 2, 0, 3], 
-                    [Infinity, Infinity, Infinity, Infinity, 5, Infinity, Infinity, Infinity, 3, 0]
+                    [0, 6, 0, 0, 0, 3, 0, 0, 0, 0], 
+                    [6, 0, 3, 2, 0, 0, 0, 0, 0, 0], 
+                    [0, 3, 0, 1, 5, 0, 0, 0, 0, 0],
+                    [0, 2, 1, 0, 8, 0, 0, 0, 0, 0],
+                    [0, 0, 5, 8, 0, 0, 0, 0, 5, 5], 
+                    [3, 0, 0, 0, 0, 0, 1, 7, 0, 0],
+                    [0, 0, 0, 0, 0, 1, 0, 0, 3, 0],
+                    [0, 0, 0, 0, 0, 7, 0, 0, 2, 0],
+                    [0, 0, 0, 0, 5, 0, 3, 2, 0, 3], 
+                    [0, 0, 0, 0, 5, 0, 0, 0, 3, 0]
                 ]
+
+const adjacency = [
+    [0, 2, 0, 0, 0, 0, 0, 0],
+    [2, 0, 4, 5, 0, 0, 0, 0],
+    [0, 4, 0, 4, 0, 0, 0, 0],
+    [0, 5, 4, 0, 3, 0, 0, 0],
+    [0, 0, 0, 3, 0, 1, 7, 0],
+    [0, 0, 0, 0, 1, 0, 0, 1],
+    [0, 0, 0, 0, 7, 0, 0, 2],
+    [0, 0, 0, 0, 0, 1, 2, 0]
+]
+
+// for (let i = 0; i < 8; i++) {
+//     for (let j = 0; j < 8; j++) {
+//         if (adjacency[i][j] == 0) {
+//             if (i != j) {
+//                 adjacency[i][j] = 0
+//             }
+//         }
+//     }
+// }
 
 const graphNodeNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
 const rows = testMatrix1.length
 const cols = testMatrix1[0].length
 
-// const testMatrix1 = [[0, 5, 7, Infinity], [5, 0, Infinity, 6], [7, Infinity, 0, 2], [Infinity, 6, 2, 0]]
+// const testMatrix1 = [[0, 5, 7, 0], [5, 0, 0, 6], [7, 0, 0, 2], [0, 6, 2, 0]]
 // const graphNodeNames = ['A', 'B', 'C', 'D']
 
 console.log("========== REPRESENTASI WEIGHTED ADJACENCY MATRIX ==========")
-console.table(testMatrix1)
+console.table(adjacency)
 
-console.log(UCS(testMatrix1, 3, 9, graphNodeNames))
+console.log(UCS(testMatrix1, 0, 9, graphNodeNames))

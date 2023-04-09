@@ -47,17 +47,55 @@ export class TreeNode {
     }
 
     printInfo() {
-        console.log(this.name, this.location, this.priority)
+        console.log(this.name, this.location)
+    }
+
+    getPathFromRoot() {
+        const path = []
+        let currentNode = this
+        while (currentNode !== null) {
+            path.unshift(currentNode)
+            currentNode = currentNode.parent
+        }
+        return path
+    }
+
+    /**
+     * @abstract
+     * Node priority depends on implementation of search algorithm.
+     ** UCS => priority = distance from start node
+     ** A*  => priority = distance from start node + heuristic
+     */
+    get priority() {}
+}
+
+export class UCSTreeNode extends TreeNode {
+    constructor(parent, name, location, distFromStart) {
+        super(parent, name, location, distFromStart)
+    }
+
+    get priority() {
+        return this.distFromStart
     }
 }
+
+export class AstarTreeNode extends TreeNode {
+    
+}
+
+// module.exports = PriorityQueue
 
 // // TESTING PRIORITY QUEUE AND TREE NODE
 
 // // Node construction
-// const node1 = new TreeNode(null, "a", {x: 4.4, y: 5.5}, 10)
-// const node2 = new TreeNode(node1, "b", {x: 6.1, y: 9.7}, 2)
-// const node3 = new TreeNode(node1, "c", {x: 6.1, y: 9.7}, 7)
-// const node4 = new TreeNode(node2, "d", {x: 6.1, y: 9.7}, 1)
+const node1 = new UCSTreeNode(null, "a", {x: 4.4, y: 5.5}, 10)
+const node2 = new UCSTreeNode(node1, "b", {x: 6.1, y: 9.7}, 2)
+const node3 = new UCSTreeNode(node1, "c", {x: 6.1, y: 9.7}, 7)
+const node4 = new UCSTreeNode(node2, "d", {x: 6.1, y: 9.7}, 1)
+
+console.log(node1.priority)
+
+
 
 // // Queue operations
 // console.log("========== QUEUE OPERATION TEST ==========")
