@@ -15,22 +15,6 @@ export class PriorityQueue {
         else {
             this.list.splice(index, 0, elmt);
         }
-        // if (this.isEmpty()) {
-        //     this.list.push(elmt)
-        // }
-        // else {
-        //     let i = 0
-        //     const length = this.list.length
-        //     for (i; i < length; i++) {
-        //         // if (this.list[i].distFromStart > elmt.distFromStart) {
-        //         //     break
-        //         // }
-        //         if (this.list[i].priority > elmt.priority) {
-        //             break
-        //         }
-        //     }
-        //     this.list.splice(i, 0, elmt)
-        // }
     }
 
     dequeue() {
@@ -75,7 +59,7 @@ export class TreeNode {
      * @abstract
      * Node priority depends on implementation of search algorithm.
      ** UCS => priority = distance from start node
-     ** A*  => priority = distance from start node + heuristic
+     ** A*  => priority = distance from start node + heuristic (distance approx from current node to goal node)
      */
     get priority() {}
 }
@@ -91,8 +75,22 @@ export class UCSTreeNode extends TreeNode {
 }
 
 export class AstarTreeNode extends TreeNode {
-    
+    constructor(parent, id, name, location, distFromStart, goalLocation) {
+        super(parent, id, name, location, distFromStart)
+        this.goalLocation = goalLocation
+    }
+
+    get priority() {
+        return this.distFromStart + euclideanDistance(this.location, this.goalLocation)
+    }
 }
+
+function euclideanDistance(a, b) {
+    const x = a.x - b.x;
+    const y = a.y - b.y;
+  
+    return Math.sqrt(x ** 2 + y ** 2);
+  }
 
 // module.exports = PriorityQueue
 
