@@ -41,25 +41,25 @@ select.form-control {
 }
 
 #start-node {
-  font-size: 18px;
+  font-size: 20px;
   background-color: #4D5259;
   color: azure;
 }
 
 #end-node {
-  font-size: 18px;
+  font-size: 20px;
   background-color: #4D5259;
   color: azure;
 }
 
 #search-algorithm {
-  font-size: 18px;
+  font-size: 20px;
   background-color: #4D5259;
   color: azure;
 }
 
 #search-btn {
-  font-size: 18px;
+  font-size: 20px;
   color: azure;
 }
 
