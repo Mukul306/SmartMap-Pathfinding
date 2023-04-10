@@ -1,0 +1,70 @@
+body {
+  font-family: 'Karla', sans-serif;
+}
+
+.load-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.selectors {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.parent {
+  height: 100vh;
+}
+
+.form-control:focus {
+  color: black;
+}
+
+.control-panel {
+  height: 100%; 
+  width: 50%; 
+  float: right; 
+  padding: 20px;
+  background-color: #36393F;
+  color: azure;
+}
+
+
+.custom-file-label::after {
+  content: none;
+}
+
+
+select.form-control {
+  background-color: #4D5259;
+  color: azure;
+  border-color: #202222;
+}
+
+#start-node {
+  background-color: #4D5259;
+  color: azure;
+}
+
+#end-node {
+  background-color: #4D5259;
+  color: azure;
+}
+
+#search-algorithm {
+  background-color: #4D5259;
+  color: azure;
+}
+
+#search-btn {
+  color: azure;
+}
+
+#map {
+  height: 100%;
+  height: 100%; 
+  width: 50%; 
+  float: left;
+}

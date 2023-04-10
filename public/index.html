@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html style="height: 100vh;">
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <script src = "../src/script.js"></script>
+    <link rel="stylesheet" href="../style/style.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;700&display=swap');
+    </style>
+</head>
+<body style="height: 100%;">
+
+  <div id="map"></div>
+
+  <div class="control-panel">
+
+    <h3 style="font-weight: bold; padding-left: 4px; margin-top: 1rem;">UCS and A* Searching Algorithm</h3>
+
+    <form>
+
+      <div class="form-group load-data">
+        <label for="file-input">Load Data</label>
+        <input type="file" id="file-input" accept=".json">
+      </div>
+
+      <div class="selectors">
+        <div class="form-group">
+          <label for="start-node" style>Start Node</label>
+          <select id="start-node" class="form-control"></select>
+        </div>
+  
+        <div class="form-group">
+          <label for="end-node">End Node</label>
+          <select id="end-node" class="form-control"></select>
+        </div>
+  
+        <div class="form-group">
+          <label for="search-algorithm">Search Algorithm</label>
+          <select id="search-algorithm" class="form-control">
+            <option value="UCS">UCS</option>
+            <option value="A*">A*</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="button" id="search-btn" class="btn btn-primary">Start Search</button>
+
+    </form>
+
+  </div>
+
+</body>
+</html>
