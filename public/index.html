@@ -1,52 +1,56 @@
 <!DOCTYPE html>
-<html style="height: 100vh;">
+<html>
 <head>
   <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="index.css"> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>UCS and A* Searching Algorithm</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    
+    <!-- Google API and Leaflet JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-      crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    
+    <!-- Script -->
     <script src = "../src/script.js"></script>
+    
+    <!-- CSS Stylesheet and Font -->
     <link rel="stylesheet" href="../style/style.css">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;700&display=swap');
     </style>
 </head>
-<body style="height: 100%;">
+<body>
 
   <div id="map"></div>
 
   <div class="control-panel">
 
-    <h3 style="font-weight: bold; padding-left: 4px; margin-top: 1rem;">UCS and A* Searching Algorithm</h3>
+    <h3 style="font-weight: bold; margin-top: 1rem; font-size: 28px;">UCS and A* Searching Algorithm</h3>
 
     <form>
 
       <div class="form-group load-data">
-        <label for="file-input">Load Data</label>
+        <label for="file-input" class="form-label">Load Data</label>
         <input type="file" id="file-input" accept=".json">
       </div>
 
       <div class="selectors">
         <div class="form-group">
-          <label for="start-node" style>Start Node</label>
+          <label for="start-node" class="form-label">Start Node</label>
           <select id="start-node" class="form-control"></select>
         </div>
   
         <div class="form-group">
-          <label for="end-node">End Node</label>
+          <label for="end-node" class="form-label">End Node</label>
           <select id="end-node" class="form-control"></select>
         </div>
   
         <div class="form-group">
-          <label for="search-algorithm">Search Algorithm</label>
+          <label for="search-algorithm" class="form-label">Search Algorithm</label>
           <select id="search-algorithm" class="form-control">
             <option value="UCS">UCS</option>
             <option value="A*">A*</option>

@@ -1,4 +1,5 @@
 body {
+  height: 100vh;
   font-family: 'Karla', sans-serif;
 }
 
@@ -7,15 +8,12 @@ body {
   flex-direction: column;
   justify-content: center;
   margin-top: 2rem;
+  font-size: 16px;
 }
 
 .selectors {
   margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.parent {
-  height: 100vh;
+  margin-bottom: 3rem;
 }
 
 .form-control:focus {
@@ -31,11 +29,10 @@ body {
   color: azure;
 }
 
-
-.custom-file-label::after {
-  content: none;
+.form-label {
+  font-weight: 400; 
+  font-size: 20px;
 }
-
 
 select.form-control {
   background-color: #4D5259;
@@ -44,21 +41,25 @@ select.form-control {
 }
 
 #start-node {
+  font-size: 18px;
   background-color: #4D5259;
   color: azure;
 }
 
 #end-node {
+  font-size: 18px;
   background-color: #4D5259;
   color: azure;
 }
 
 #search-algorithm {
+  font-size: 18px;
   background-color: #4D5259;
   color: azure;
 }
 
 #search-btn {
+  font-size: 18px;
   color: azure;
 }
 
