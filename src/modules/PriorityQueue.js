@@ -1,36 +1,36 @@
 class PriorityQueue {
-  constructor() {
-    this.queue = [];
-  }
-  
-  enqueue(node) {
-    this.queue.push(node);
-    this.queue.sort((a, b) => a.priority - b.priority);
-  }
-  
-  dequeue() {
-    return this.queue.shift();
-  }
-  
-  includes(node) {
-    return this.queue.includes(node);
-  }
-
-  isEmpty() {
-    return this.queue.length === 0;
-  }
-
-  get length() {
-    return this.queue.length;
-  }
-
-  updatePriority(node, priority) {
-    const index = this.queue.findIndex(elmt => elmt.id === node.id);
-    if (index !== -1) {
-      this.queue[index].priority = priority;
-      this.queue.sort((a, b) => a.priority - b.priority);
+    constructor() {
+        this.list = []
     }
-  }
+
+    isEmpty() {
+        return this.list.length == 0
+    }
+
+    enqueue(elmt) {
+        const index = this.list.findIndex((item) => item.priority > elmt.priority);
+        if (index === -1) {
+            this.list.push(elmt);
+        } 
+        else {
+            this.list.splice(index, 0, elmt);
+        }
+    }
+
+    dequeue() {
+        return this.list.shift()
+    }
+
+    printAllInfo() {
+        if (this.isEmpty()) {
+            console.log("kosong...")
+        }
+        else {
+            console.log("Queue elements: ")
+            this.list.forEach(elmt => elmt.printInfo())
+        }
+    }
 }
 
-module.exports = PriorityQueue;
+
+module.exports = {PriorityQueue}

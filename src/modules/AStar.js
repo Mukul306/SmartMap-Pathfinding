@@ -1,96 +1,51 @@
-const PriorityQueue = require("./PriorityQueue");
+const {PriorityQueue} = require('./PriorityQueue')
+const {AstarTreeNode} = require('./TreeNode')
 
-function astar(start, goal, adjacency) {
-  // Initialize open and closed list
-  const open = new PriorityQueue();
-  const closed = new Set();
-  const g = new Map();
-  const f = new Map();
+/**
+ * Fungsi pencarian Astar, return berupa path dan cost dalam javascript object
+ * @param {*} AdjMatrix Weighted adjacency AdjMatrix, didapat dari hasil input file
+ * @param {*} startID Index node awal pada AdjMatrix
+ * @param {*} finishID Index node akhir pada AdjMatrix
+ * @param {Array<{id, name, location}>} nodesInfo Array informasi node, didapat dari hasil input file
+ */
+function Astar(AdjMatrix, startID, finishID, nodesInfo) {
+    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, finishID < AdjMatrix.length
 
-  g.set(start, 0);
-  f.set(start, heuristic(start, goal));
-  start.priority = f.get(start);
+    // TODO: validasi apakah start node terhubung dengan finish node
 
-  open.enqueue(start);
-
-  while (!open.isEmpty()) {
-    const current = open.dequeue();
-
-    if (current === goal) {
-      return reconstructPath(current);
+    if (startID === finishID) {
+        return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
     }
 
-    closed.add(current);
+    const prioqueue = new PriorityQueue()
+    const nodeCount = AdjMatrix.length
+    let expandNodeIdx = startID
+    const firstNodeObj = nodesInfo.find(elmt => elmt.id === startID)
+    const goalLocation = nodesInfo.find(elmt => elmt.id === finishID).location
+    let expandNode = new AstarTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 
+                                        0, goalLocation)
 
-    for (const neighbor of current.neighbors) {
-      if (closed.has(neighbor)) {
-        continue;
-      }
-
-      const tentativeG = g.get(current) + adjacency[current.id][neighbor.id];
-
-      if (!open.includes(neighbor) || tentativeG < g.get(neighbor)) {
-        g.set(neighbor, tentativeG);
-        f.set(neighbor, g.get(neighbor) + heuristic(neighbor, goal));
-        neighbor.priority = f.get(neighbor);
-        neighbor.parent = current;
-
-        if (!open.includes(neighbor)) {
-          open.enqueue(neighbor);
-        } else {
-          open.updatePriority(neighbor, neighbor.priority);
+    do {
+        for (let i = 0; i < nodeCount; i++) {
+            const distance = AdjMatrix[expandNodeIdx][i]
+            if (distance !== 0) {
+                let liveNodeID = i
+                let liveNodeObj = nodesInfo.find(elmt => elmt.id === liveNodeID)
+                let distFromStart = expandNode.distFromStart + distance
+                const liveNode = new AstarTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
+                                                    liveNodeObj.location, distFromStart, goalLocation)
+                prioqueue.enqueue(liveNode)
+            }
         }
-      }
+
+        expandNode = prioqueue.dequeue()
+        expandNodeIdx = expandNode.id
     }
-  }
+    while (expandNode.id !== finishID)
+    
+    const routeList = expandNode.getPathFromRoot()
 
-  return null;
+    return {route: routeList, cost: expandNode.distFromStart}
 }
 
-function haversineDistance(a, b) {
-  const earthRadius = 6371; // in kilometers
-
-  const lat1 = a.position.latitude;
-  const lon1 = a.position.longitude;
-  const lat2 = b.position.latitude;
-  const lon2 = b.position.longitude;
-
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-
-  const haversine =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) ** 2;
-
-  const distance = 2 * earthRadius * Math.asin(Math.sqrt(haversine));
-
-  return distance;
-}
-
-function euclideanDistance(a, b) {
-  const x = a.position.x - b.position.x;
-  const y = a.position.y - b.position.y;
-
-  return Math.sqrt(x ** 2 + y ** 2);
-}
-
-function heuristic(a, b) {
-  // return haversineDistance(a, b);
-  return euclideanDistance(a, b);
-}
-
-function reconstructPath(goal) {
-  const path = [goal];
-  let current = goal;
-  
-  while (current.parent !== null) {
-    path.unshift(current.parent);
-    current = current.parent;
-  }
-  
-  return path;
-}
-
-module.exports = astar;
+module.exports = {Astar}

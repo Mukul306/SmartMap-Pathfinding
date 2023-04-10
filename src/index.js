@@ -1,5 +1,5 @@
 const Node = require('./modules/Node');
-const astar = require('./modules/AStar');
+const astar = require('./modules/Astar');
 const ucs = require('./modules/UCS');
 
 // Define the graph

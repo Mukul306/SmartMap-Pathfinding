@@ -1,59 +1,50 @@
-const PriorityQueue = require("./PriorityQueue");
+const {PriorityQueue} = require('./PriorityQueue.js')
+const {UCSTreeNode} = require('./TreeNode.js')
 
-function ucs(start, goal, adjacency) {
-  // Initialize open and closed list
-  const open = new PriorityQueue();
-  const closed = new Set();
-  const g = new Map();
+/**
+ * Fungsi pencarian UCS, return berupa path dan cost dalam javascript object
+ * @param {*} AdjMatrix Weighted adjacency AdjMatrix, didapat dari hasil input file
+ * @param {*} startID Index node awal pada AdjMatrix
+ * @param {*} finishID Index node akhir pada AdjMatrix
+ * @param {Array<{id, name, location}>} nodesInfo Array informasi node, didapat dari hasil input file
+ */
+function UCS(AdjMatrix, startID, finishID, nodesInfo) {
+    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, finishID < AdjMatrix.length
 
-  g.set(start, 0);
-  start.priority = g.get(start);
+    // TODO: validasi apakah start node terhubung dengan finish node
 
-  open.enqueue(start);
-
-  while (!open.isEmpty()) {
-    const current = open.dequeue();
-
-    if (current === goal) {
-      return reconstructPath(current);
+    if (startID === finishID) {
+        return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
     }
 
-    closed.add(current);
+    const prioqueue = new PriorityQueue()
+    const nodeCount = AdjMatrix.length
+    let expandNodeIdx = startID
+    const firstNodeObj = nodesInfo.find(elmt => elmt.id === startID)
+    let expandNode = new UCSTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 0)
 
-    for (const neighbor of current.neighbors) {
-      if (closed.has(neighbor)) {
-        continue;
-      }
-
-      const tentativeG = g.get(current) + adjacency[current.id][neighbor.id];
-
-      if (!open.includes(neighbor) || tentativeG < g.get(neighbor)) {
-        g.set(neighbor, tentativeG);
-        neighbor.priority = g.get(neighbor);
-        neighbor.parent = current;
-
-        if (!open.includes(neighbor)) {
-          open.enqueue(neighbor);
-        } else {
-            open.updatePriority(neighbor, neighbor.priority);
+    do {
+        for (let i = 0; i < nodeCount; i++) {
+            const distance = AdjMatrix[expandNodeIdx][i]
+            if (distance !== 0) {
+                let liveNodeID = i
+                let liveNodeObj = nodesInfo.find(elmt => elmt.id === liveNodeID)
+                let distFromStart = expandNode.distFromStart + distance
+                const liveNode = new UCSTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
+                                                liveNodeObj.location, distFromStart)
+                prioqueue.enqueue(liveNode)
+            }
         }
-      }
+
+        expandNode = prioqueue.dequeue()
+        expandNodeIdx = expandNode.id
     }
-  }
+    while (expandNode.id !== finishID)
+    
+    const routeList = expandNode.getPathFromRoot()
 
-  return null;
+    return {route: routeList, cost: expandNode.distFromStart}
 }
 
-function reconstructPath(goal) {
-  const path = [goal];
-  let current = goal;
-  
-  while (current.parent !== null) {
-    path.unshift(current.parent);
-    current = current.parent;
-  }
-  
-  return path;
-}
+module.exports = {UCS}
 
-module.exports = ucs;

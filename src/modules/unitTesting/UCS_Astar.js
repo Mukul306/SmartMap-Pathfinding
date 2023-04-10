@@ -16,16 +16,16 @@ const {Astar} = require('../Astar.js')
 // ]
 
 // const nodesInfo1 = [
-//     {id: 0, name: 'A', location: {lat: 3, lng: 4}},
-//     {id: 1, name: 'B', location: {lat: 3, lng: 4}},
-//     {id: 2, name: 'C', location: {lat: 3, lng: 4}},
-//     {id: 3, name: 'D', location: {lat: 3, lng: 4}},
-//     {id: 4, name: 'E', location: {lat: 3, lng: 4}},
-//     {id: 5, name: 'F', location: {lat: 3, lng: 4}},
-//     {id: 6, name: 'G', location: {lat: 3, lng: 4}},
-//     {id: 7, name: 'H', location: {lat: 3, lng: 4}},
-//     {id: 8, name: 'I', location: {lat: 3, lng: 4}},
-//     {id: 9, name: 'J', location: {lat: 3, lng: 4}}
+//     {id: 0, name: 'A', location: {x: 3, y: 4}},
+//     {id: 1, name: 'B', location: {x: 3, y: 4}},
+//     {id: 2, name: 'C', location: {x: 3, y: 4}},
+//     {id: 3, name: 'D', location: {x: 3, y: 4}},
+//     {id: 4, name: 'E', location: {x: 3, y: 4}},
+//     {id: 5, name: 'F', location: {x: 3, y: 4}},
+//     {id: 6, name: 'G', location: {x: 3, y: 4}},
+//     {id: 7, name: 'H', location: {x: 3, y: 4}},
+//     {id: 8, name: 'I', location: {x: 3, y: 4}},
+//     {id: 9, name: 'J', location: {x: 3, y: 4}}
 // ]
 
 // console.log(UCS(testMatrix1, 0, 6, nodesInfo1))
@@ -42,14 +42,14 @@ const testMatrix2 = [
 ]
 
 const nodesInfo2 = [
-    {id: 0, name: 'A', location: {lat: 0, lng: 0}},
-    {id: 1, name: 'B', location: {lat: 0, lng: 1}},
-    {id: 2, name: 'C', location: {lat: 0, lng: 2}},
-    {id: 3, name: 'D', location: {lat: 1, lng: 1}},
-    {id: 4, name: 'E', location: {lat: 1, lng: 2}},
-    {id: 5, name: 'F', location: {lat: 2, lng: 2}},
-    {id: 6, name: 'G', location: {lat: 1, lng: 3}},
-    {id: 7, name: 'H', location: {lat: 2, lng: 3}}
+    {id: 0, name: 'A', location: {x: 0, y: 0}},
+    {id: 1, name: 'B', location: {x: 0, y: 1}},
+    {id: 2, name: 'C', location: {x: 0, y: 2}},
+    {id: 3, name: 'D', location: {x: 1, y: 1}},
+    {id: 4, name: 'E', location: {x: 1, y: 2}},
+    {id: 5, name: 'F', location: {x: 2, y: 2}},
+    {id: 6, name: 'G', location: {x: 1, y: 3}},
+    {id: 7, name: 'H', location: {x: 2, y: 3}}
 ] 
 
 console.log("========== REPRESENTASI GRAF DALAM WEIGHTED ADJACENCY MATRIX ==========")
@@ -58,5 +58,8 @@ console.table(testMatrix2)
 
 console.log("\n UCS")
 console.log(UCS(testMatrix2, 0, 6, nodesInfo2))
+
 console.log("\Astar")
 console.log(Astar(testMatrix2, 0, 6, nodesInfo2))
+
+
