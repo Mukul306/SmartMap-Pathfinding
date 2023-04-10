@@ -3,6 +3,15 @@ body {
   font-family: 'Karla', sans-serif;
 }
 
+.control-panel {
+  height: 100%; 
+  width: 50%; 
+  float: right; 
+  padding: 28px;
+  background-color: #36393F;
+  color: azure;
+}
+
 .load-data {
   display: flex;
   flex-direction: column;
@@ -20,14 +29,6 @@ body {
   color: black;
 }
 
-.control-panel {
-  height: 100%; 
-  width: 50%; 
-  float: right; 
-  padding: 20px;
-  background-color: #36393F;
-  color: azure;
-}
 
 .form-label {
   font-weight: 400; 
