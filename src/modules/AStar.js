@@ -17,6 +17,8 @@ function Astar(AdjMatrix, startID, finishID, nodesInfo) {
         return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
     }
 
+    // Initialize empty priority queue, set expand node to start node with no parent 
+    // and best path so far to null 
     const prioqueue = new PriorityQueue()
     const nodeCount = AdjMatrix.length
     let expandNodeIdx = startID
@@ -24,8 +26,17 @@ function Astar(AdjMatrix, startID, finishID, nodesInfo) {
     const goalLocation = nodesInfo.find(elmt => elmt.id === finishID).location
     let expandNode = new AstarTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 
                                         0, goalLocation)
+    let bestPath = null
+
+    /*
+     * In A*, searching process is repeated until expand node = goal node and its distance
+     * from start node is less than/equal to approximate/predicted distance of any node in priority 
+     * queue to goal node. Priority is sorted by this formula:
+     * distance from start node to current node + heuristic distance from current node to goal node
+     */
 
     do {
+        // Check every neighbor of expand node, add to priority queue as live node
         for (let i = 0; i < nodeCount; i++) {
             const distance = AdjMatrix[expandNodeIdx][i]
             if (distance !== 0) {
@@ -38,14 +49,22 @@ function Astar(AdjMatrix, startID, finishID, nodesInfo) {
             }
         }
 
+        // Dequeue priority queue, set dequeued element as expand node
         expandNode = prioqueue.dequeue()
         expandNodeIdx = expandNode.id
-    }
-    while (expandNode.id !== finishID)
-    
-    const routeList = expandNode.getPathFromRoot()
 
-    return {route: routeList, cost: expandNode.distFromStart}
+        // Update best path so far if needed
+        if (expandNode.id === finishID) {
+            if (bestPath === null || expandNode.distFromStart < bestPath.distFromStart) {
+                bestPath = expandNode
+            }
+        }
+    }
+    while (!(bestPath !== null && bestPath.distFromStart <= prioqueue.minPriority()))
+    
+    const routeList = bestPath.getPathFromRoot()
+
+    return {route: routeList, cost: bestPath.distFromStart}
 }
 
 module.exports = {Astar}

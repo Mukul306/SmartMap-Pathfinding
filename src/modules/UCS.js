@@ -17,13 +17,20 @@ function UCS(AdjMatrix, startID, finishID, nodesInfo) {
         return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
     }
 
+    // Initialize empty priority queue, set expand node to start node with no parent 
     const prioqueue = new PriorityQueue()
     const nodeCount = AdjMatrix.length
     let expandNodeIdx = startID
     const firstNodeObj = nodesInfo.find(elmt => elmt.id === startID)
     let expandNode = new UCSTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 0)
 
+    /*
+     * In UCS, once expand node = goal node, searching process stops since priority queue is
+     * sorted by distance from start node to current node
+     */
+
     do {
+        // Check every neighbor of expand node, add to priority queue as live node
         for (let i = 0; i < nodeCount; i++) {
             const distance = AdjMatrix[expandNodeIdx][i]
             if (distance !== 0) {
@@ -36,6 +43,7 @@ function UCS(AdjMatrix, startID, finishID, nodesInfo) {
             }
         }
 
+        // Dequeue priority queue, set dequeued element as expand node
         expandNode = prioqueue.dequeue()
         expandNodeIdx = expandNode.id
     }

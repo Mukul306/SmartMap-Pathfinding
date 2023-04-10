@@ -30,7 +30,15 @@ class PriorityQueue {
             this.list.forEach(elmt => elmt.printInfo())
         }
     }
-}
+
+    minPriority() {
+        let min = Infinity
+        for (let elmt of this.list) {
+            if (elmt.priority < min) min = elmt.priority
+        }
+        return min
+    }
+ }
 
 
 module.exports = {PriorityQueue}

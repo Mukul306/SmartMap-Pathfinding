@@ -10,7 +10,7 @@ class TreeNode {
     }
 
     printInfo() {
-        console.log(this.id, this.name, this.location)
+        console.log(this.id, this.name, this.location, this.priority)
     }
 
     getPathFromRoot() {
