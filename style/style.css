@@ -25,11 +25,6 @@ body {
   margin-bottom: 3rem;
 }
 
-.form-control:focus {
-  color: black;
-}
-
-
 .form-label {
   font-weight: 400; 
   font-size: 20px;
@@ -41,23 +36,27 @@ select.form-control {
   border-color: #202222;
 }
 
+#search-algorithm {
+  padding-left: 16px;
+  font-size: 18px;
+  background-color: #4D5259;
+  color: azure;
+}
+
 #start-node {
-  font-size: 20px;
+  padding-left: 16px;
+  font-size: 18px;
   background-color: #4D5259;
   color: azure;
 }
 
 #end-node {
-  font-size: 20px;
+  padding-left: 16px;
+  font-size: 18px;
   background-color: #4D5259;
   color: azure;
 }
 
-#search-algorithm {
-  font-size: 20px;
-  background-color: #4D5259;
-  color: azure;
-}
 
 #search-btn {
   font-size: 20px;
