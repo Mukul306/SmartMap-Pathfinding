@@ -1,5 +1,5 @@
 const {UCS} = require('../src/modules/UCS.js')
-const {Astar} = require('../src/modules/Astar.js')
+const {Astar} = require('../src/modules/AStar.js')
 const {euclideanDistance, haversineDistance} = require('../src/modules/GraphUtil.js')
 
 // TEST CASE 1

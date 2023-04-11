@@ -94,6 +94,11 @@ input::-webkit-file-upload-button {
   cursor: pointer;
 }
 
+input::-webkit-file-upload-button:hover {
+  background-color: #464a51;
+  color: azure;
+}
+
 .load-data {
   display: flex;
   flex-direction: column;
@@ -110,6 +115,10 @@ input::-webkit-file-upload-button {
 .form-label {
   font-weight: 400; 
   font-size: 20px;
+}
+
+.form-control {
+  padding: 4px;
 }
 
 select.form-control {

@@ -1,3 +1,7 @@
+// Initialize global variables
+let nodes = [];
+let adjacency = [];
+
 $(document).ready(function() {
   // Initialize map
   var map = L.map('map').setView([-6.891416087075806, 107.61033723180078], 16);
@@ -8,29 +12,52 @@ $(document).ready(function() {
     maxZoom: 18,
   }).addTo(map);
 
-  // Add search control
-  var searchControl = L.control.search({
-    layer: L.geoJSON(),
-    propertyName: 'name',
-    marker: false,
-    moveToLocation: function(latlng, title, map) {
-      var zoom = map.getBoundsZoom(latlng.layer.getBounds());
-      map.setView(latlng, zoom); // access the zoom
-    }
-  }).addTo(map);
-
   // Load file
   $('#file-input').change(function() {
-    var file = $(this).prop('files')[0];
+    let file = $(this).prop('files')[0];
     if (file) {
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.onload = function(e) {
-        var data = JSON.parse(e.target.result);
-        // Add data to map
-        // ...
-        // Populate start and end node dropdowns
-        // ...
+        let data = JSON.parse(e.target.result);
+      
+        // Add nodes to map
+        for (let node of data.nodes) {
+          L.marker([node.lat, node.long]).addTo(map).bindPopup(node.name);
+          // Add nodes to global variable
+          // let newNode = new TreeNode(null, node.id, node.name, {lat: node.lat, long: node.long}, 0);
+          nodes.push(node);
+        }
+      
+        // Add edges to map
+        for (let i = 0; i < data.adjacency.length; i++) {
+          let edges = data.adjacency[i];
+          for (let j = 0; j < edges.length; j++) {
+            if (edges[j] > 0) {
+              L.polyline([[data.nodes[i].lat, data.nodes[i].long], [data.nodes[j].lat, data.nodes[j].long]], {
+                color: 'blue',
+                weight: edges[j],
+                opacity: 0.5,
+                smoothFactor: 1
+              }).addTo(map);
+            }
+          }
+        }
+      
+        // Add adjacency to global variable
+        adjacency = data.adjacency;
+        
+        // Add start nodes to dropdown
+        for (let node of nodes) {
+          console.log(nodes);
+          $('#start-node').append(`<option value="${node.id}">${node.name}</option>`);
+        }
+
+        // Add end nodes to dropdown
+        for (let node of nodes) {
+          $('#end-node').append(`<option value="${node.id}">${node.name}</option>`);
+        }
       }
+      
       reader.readAsText(file);
     }
   });
