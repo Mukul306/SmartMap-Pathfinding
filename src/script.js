@@ -388,11 +388,25 @@ $(document).ready(function() {
       path = Astar(adjacency, startNode, endNode, nodes, haversineDistance);
     }
 
+    let route = path.route;
+    let routeNames = route.map(node => node.name);
+    let cost = path.cost;
+
+    // Show the path popup
+    document.getElementById("popup").style.display = "block";
+
+    // Get the path elements
+    const shortestPath = document.getElementById('shortest-path');
+    const totalCost = document.getElementById('total-cost');
+
+    // Set the text of the path elements
+    shortestPath.textContent = routeNames.join(' → ');
+    totalCost.textContent = cost;
+
     // Adjust map view
     map.fitBounds(L.latLngBounds(nodes.map(node => [node.location.lat, node.location.long])));
 
     // Show edges of path on map
-    let route = path.route;
     for (let i = 0; i < route.length - 1; i++) {
       let currNode = nodes.find(node => node.id == route[i].id);
       let nextNode = nodes.find(node => node.id == route[i+1].id);
