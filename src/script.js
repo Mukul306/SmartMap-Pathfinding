@@ -321,7 +321,6 @@ $(document).ready(function() {
             if (edges[j] > 0) {
               L.polyline([[data.nodes[i].location.lat, data.nodes[i].location.long], [data.nodes[j].location.lat, data.nodes[j].location.long]], {
                 color: 'blue',
-                weight: edges[j],
                 opacity: 0.5,
                 smoothFactor: 1
               }).addTo(map);
@@ -377,7 +376,6 @@ $(document).ready(function() {
         if (edges[j] > 0) {
           L.polyline([[nodes[i].location.lat, nodes[i].location.long], [nodes[j].location.lat, nodes[j].location.long]], {
             color: 'blue',
-            weight: edges[j],
             opacity: 0.5,
             smoothFactor: 1
           }).addTo(map);
