@@ -1,6 +1,6 @@
-const {UCS} = require('../UCS.js')
-const {Astar} = require('../Astar.js')
-const {euclideanDistance, haversineDistance} = require('../GraphUtil.js')
+const {UCS} = require('../src/modules/UCS.js')
+const {Astar} = require('../src/modules/Astar.js')
+const {euclideanDistance, haversineDistance} = require('../src/modules/GraphUtil.js')
 
 // TEST CASE 1
 // taken from https://www.gatevidyalay.com/a-algorithm-a-algorithm-example-in-ai/ 
