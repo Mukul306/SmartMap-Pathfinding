@@ -24,6 +24,21 @@ class TreeNode {
     }
 
     /**
+     * A helper method to see if a node is already visited in this path to avoid going back and forth
+     *  (mondar-mandir)
+     * @param {int} nodeId 
+     * @returns ans
+     */
+    isNodeAlreadyVisited(nodeId) {
+        let currentNode = this
+        while (currentNode !== null) {
+            if (currentNode.id === nodeId) return true
+            currentNode = currentNode.parent
+        }
+        return false
+    }
+
+    /**
      * @abstract
      * Node priority depends on implementation of search algorithm.
      ** UCS => priority = distance from start node
@@ -43,13 +58,14 @@ class UCSTreeNode extends TreeNode {
 }
 
 class AstarTreeNode extends TreeNode {
-    constructor(parent, id, name, location, distFromStart, goalLocation) {
+    constructor(parent, id, name, location, distFromStart, goalNode, heuristic) {
         super(parent, id, name, location, distFromStart)
-        this.goalLocation = goalLocation
+        this.goalNode = goalNode
+        this.heuristic = heuristic
     }
 
     get priority() {
-        return this.distFromStart + euclideanDistance(this.location, this.goalLocation)
+        return this.distFromStart + this.heuristic(this, this.goalNode)
     }
 }
 

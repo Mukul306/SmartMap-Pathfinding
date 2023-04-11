@@ -1,17 +1,17 @@
-function euclideanDistance(a, b) {
-    const x = a.x - b.x;
-    const y = a.y - b.y;
+function euclideanDistance(nodeA, nodeB) {
+    const x = nodeA.location.x - nodeB.location.x;
+    const y = nodeA.location.y - nodeB.location.y;
   
     return Math.sqrt(x ** 2 + y ** 2);
 }
 
-function haversineDistance(a, b) {
+function haversineDistance(nodeA, nodeB) {
     const earthRadius = 6371; // in kilometers
   
-    const lat1 = a.lat;
-    const lon1 = a.lng;
-    const lat2 = b.lat;
-    const lon2 = b.lng;
+    const lat1 = nodeA.location.lat;
+    const lon1 = nodeA.location.lng;
+    const lat2 = nodeB.location.lat;
+    const lon2 = nodeB.location.lng;
   
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;

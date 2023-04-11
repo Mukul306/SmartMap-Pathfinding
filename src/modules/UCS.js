@@ -2,18 +2,18 @@ const {PriorityQueue} = require('./PriorityQueue.js')
 const {UCSTreeNode} = require('./TreeNode.js')
 
 /**
- * Fungsi pencarian UCS, return berupa path dan cost dalam javascript object
- * @param {*} AdjMatrix Weighted adjacency AdjMatrix, didapat dari hasil input file
- * @param {*} startID Index node awal pada AdjMatrix
- * @param {*} finishID Index node akhir pada AdjMatrix
- * @param {Array<{id, name, location}>} nodesInfo Array informasi node, didapat dari hasil input file
+ * UCS (Uniform Cost Search) algorithm. Returns {route, cost}
+ * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
+ * @param {int} startID Starting node index in AdjMatrix
+ * @param {int} goalID Goal node index in AdjMatrix
+ * @param {{id, name, location}[]} nodesInfo Nodes information (from input file) 
  */
-function UCS(AdjMatrix, startID, finishID, nodesInfo) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, finishID < AdjMatrix.length
+function UCS(AdjMatrix, startID, goalID, nodesInfo) {
+    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
 
-    // TODO: validasi apakah start node terhubung dengan finish node
+    // TODO: validasi apakah start node terhubung dengan goal node
 
-    if (startID === finishID) {
+    if (startID === goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
     }
 
@@ -28,13 +28,15 @@ function UCS(AdjMatrix, startID, finishID, nodesInfo) {
      * In UCS, once expand node = goal node, searching process stops since priority queue is
      * sorted by distance from start node to current node
      */
-
+    let iteration = 0
     do {
+        iteration++
         // Check every neighbor of expand node, add to priority queue as live node
         for (let i = 0; i < nodeCount; i++) {
             const distance = AdjMatrix[expandNodeIdx][i]
             if (distance !== 0) {
                 let liveNodeID = i
+                if (expandNode.isNodeAlreadyVisited(i)) continue
                 let liveNodeObj = nodesInfo.find(elmt => elmt.id === liveNodeID)
                 let distFromStart = expandNode.distFromStart + distance
                 const liveNode = new UCSTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
@@ -47,10 +49,10 @@ function UCS(AdjMatrix, startID, finishID, nodesInfo) {
         expandNode = prioqueue.dequeue()
         expandNodeIdx = expandNode.id
     }
-    while (expandNode.id !== finishID)
+    while (expandNode.id !== goalID)
     
     const routeList = expandNode.getPathFromRoot()
-
+    console.log("Number of iterations: " + iteration)
     return {route: routeList, cost: expandNode.distFromStart}
 }
 
