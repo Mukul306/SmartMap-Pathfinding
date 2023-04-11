@@ -2,18 +2,19 @@ const {PriorityQueue} = require('./PriorityQueue')
 const {AstarTreeNode} = require('./TreeNode')
 
 /**
- * Fungsi pencarian Astar, return berupa path dan cost dalam javascript object
- * @param {*} AdjMatrix Weighted adjacency AdjMatrix, didapat dari hasil input file
- * @param {*} startID Index node awal pada AdjMatrix
- * @param {*} finishID Index node akhir pada AdjMatrix
- * @param {Array<{id, name, location}>} nodesInfo Array informasi node, didapat dari hasil input file
+ * A* search algorithm. Returns {route, cost}
+ * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
+ * @param {int} startID Starting node index in AdjMatrix
+ * @param {int} goalID Goal node index in AdjMatrix
+ * @param {{id, name, location}[]} nodesInfo Nodes information (from input file)
+ * @param {(node1, node2) => number} heuristic, node1 and node2 must at least contain {id, name, location}
  */
-function Astar(AdjMatrix, startID, finishID, nodesInfo) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, finishID < AdjMatrix.length
+function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
+    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
 
-    // TODO: validasi apakah start node terhubung dengan finish node
+    // TODO: validasi apakah start node terhubung dengan goal node
 
-    if (startID === finishID) {
+    if (startID === goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
     }
 
@@ -23,28 +24,30 @@ function Astar(AdjMatrix, startID, finishID, nodesInfo) {
     const nodeCount = AdjMatrix.length
     let expandNodeIdx = startID
     const firstNodeObj = nodesInfo.find(elmt => elmt.id === startID)
-    const goalLocation = nodesInfo.find(elmt => elmt.id === finishID).location
+    const goalNodeObj = nodesInfo.find(elmt => elmt.id === goalID)
     let expandNode = new AstarTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 
-                                        0, goalLocation)
+                                        0, goalNodeObj, heuristic)
     let bestPath = null
 
     /*
-     * In A*, searching process is repeated until expand node = goal node and its distance
+     * In A*, searching process repeats until expand node = goal node and its distance
      * from start node is less than/equal to approximate/predicted distance of any node in priority 
      * queue to goal node. Priority is sorted by this formula:
      * distance from start node to current node + heuristic distance from current node to goal node
      */
-
+    let iteration = 0
     do {
+        iteration++
         // Check every neighbor of expand node, add to priority queue as live node
         for (let i = 0; i < nodeCount; i++) {
             const distance = AdjMatrix[expandNodeIdx][i]
             if (distance !== 0) {
                 let liveNodeID = i
+                if (expandNode.isNodeAlreadyVisited(i)) continue
                 let liveNodeObj = nodesInfo.find(elmt => elmt.id === liveNodeID)
                 let distFromStart = expandNode.distFromStart + distance
                 const liveNode = new AstarTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
-                                                    liveNodeObj.location, distFromStart, goalLocation)
+                                                    liveNodeObj.location, distFromStart, goalNodeObj, heuristic)
                 prioqueue.enqueue(liveNode)
             }
         }
@@ -54,7 +57,7 @@ function Astar(AdjMatrix, startID, finishID, nodesInfo) {
         expandNodeIdx = expandNode.id
 
         // Update best path so far if needed
-        if (expandNode.id === finishID) {
+        if (expandNode.id === goalID) {
             if (bestPath === null || expandNode.distFromStart < bestPath.distFromStart) {
                 bestPath = expandNode
             }
@@ -63,7 +66,7 @@ function Astar(AdjMatrix, startID, finishID, nodesInfo) {
     while (!(bestPath !== null && bestPath.distFromStart <= prioqueue.minPriority()))
     
     const routeList = bestPath.getPathFromRoot()
-
+    console.log("Number of iterations: " + iteration)
     return {route: routeList, cost: bestPath.distFromStart}
 }
 
