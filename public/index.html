@@ -2,66 +2,31 @@
 <html>
 <head>
   <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCS and A* Searching Algorithm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCS and A* Searching App</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    
-    <!-- Google API and Leaflet JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-    
-    <!-- Script -->
-    <script src = "../src/script.js"></script>
-    
-    <!-- CSS Stylesheet and Font -->
-    <link rel="stylesheet" href="../style/style.css">
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;700&display=swap');
-    </style>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../style/style.css">
+
+  <!-- Custom JS -->
+  <script src="../src/script.js"></script>
 </head>
 <body>
 
-  <div id="map"></div>
-
-  <div class="control-panel">
-
-    <h3 style="font-weight: bold; margin-top: 1rem; font-size: 28px;">UCS and A* Searching Algorithm</h3>
-
-    <form>
-
-      <div class="form-group load-data">
-        <label for="file-input" class="form-label">Load Data</label>
-        <input type="file" id="file-input" accept=".json">
+  <div class="container">
+    <div class="box">
+      <div class="title-label">
+          <h2>UCS and A* Searching App</h2>
+          <h3 style="font-weight: 400;">Select a mode</h3>
       </div>
-
-      <div class="selectors">
-        <div class="form-group">
-          <label for="search-algorithm" class="form-label">Search Algorithm</label>
-          <select id="search-algorithm" class="form-control">
-            <option value="UCS">UCS</option>
-            <option value="A*">A*</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="start-node" class="form-label">Start Node</label>
-          <select id="start-node" class="form-control"></select>
-        </div>
-  
-        <div class="form-group">
-          <label for="end-node" class="form-label">End Node</label>
-          <select id="end-node" class="form-control"></select>
-        </div>
+      <div class="buttons">
+        <button class="btn">Simple Mode</button>
+        <a href="mapsearch.html" class="btn">Google Maps</a>
       </div>
-
-      <button type="button" id="search-btn" class="btn btn-primary">Start Search</button>
-
-    </form>
-
+    </div>
   </div>
 
 </body>

@@ -1,6 +1,74 @@
 body {
   height: 100vh;
+  width: 100vw;
   font-family: 'Karla', sans-serif;
+}
+
+h2 {
+  margin: 0%;
+}
+
+h3 {
+  margin: 0%;
+}
+
+.title-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  width: fit-content;
+  gap: 2rem;
+  border-radius: 8px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: azure;
+  background-color: #36393F;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: azure;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0069d9;
+  color: azure;
+}
+
+.btn:active {
+  color: azure;
+  background-color: #0062cc;
 }
 
 .control-panel {
@@ -10,6 +78,20 @@ body {
   padding: 28px;
   background-color: #36393F;
   color: azure;
+}
+
+input::-webkit-file-upload-button {
+  background-color: #4D5259;
+  font-family: 'Karla', sans-serif;
+  padding: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-right: 12px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: none;
+  color: azure;
+  cursor: pointer;
 }
 
 .load-data {
@@ -36,6 +118,11 @@ select.form-control {
   border-color: #202222;
 }
 
+.control-panel-foot {
+  margin-top: 5rem;
+  margin-bottom: 2rem;
+}
+
 #search-algorithm {
   padding-left: 16px;
   font-size: 18px;
@@ -57,9 +144,7 @@ select.form-control {
   color: azure;
 }
 
-
 #search-btn {
-  font-size: 20px;
   color: azure;
 }
 
