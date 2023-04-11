@@ -23,7 +23,7 @@ To run the program, follow these steps:
 
 ## Author
 - [Enrique Alifio Ditya - 13521142](https://github.com/AlifioDitya) 
-- [Haziq Abiyyu Mahdy - 13521070](https://github.com/haziqam) 
+- [Haziq Abiyyu Mahdy - 13521170](https://github.com/haziqam) 
 
 
 ## Made With
