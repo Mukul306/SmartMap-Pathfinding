@@ -127,11 +127,6 @@ select.form-control {
   border-color: #202222;
 }
 
-.control-panel-foot {
-  margin-top: 5rem;
-  margin-bottom: 2rem;
-}
-
 #search-algorithm {
   padding-left: 16px;
   font-size: 18px;
