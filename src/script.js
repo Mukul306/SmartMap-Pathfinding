@@ -171,9 +171,7 @@ function UCS(AdjMatrix, startID, goalID, nodesInfo) {
     const nodeCount = AdjMatrix.length
     let expandNodeIdx = startID
     const firstNodeObj = nodesInfo.find(node => node.id == startID)
-    console.log("Start ID", startID)
-    console.log("nodesInfo", nodesInfo)
-    console.log("firstNodeObj", firstNodeObj)
+
     let expandNode = new UCSTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 0)
 
     /*
@@ -389,8 +387,6 @@ $(document).ready(function() {
     } else {
       path = Astar(adjacency, startNode, endNode, nodes, haversineDistance);
     }
-
-    console.log(path);
 
     // Adjust map view
     map.fitBounds(L.latLngBounds(nodes.map(node => [node.location.lat, node.location.long])));
