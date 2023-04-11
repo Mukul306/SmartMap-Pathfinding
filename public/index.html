@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- CSS Stylesheet and Font -->
     <link rel="stylesheet" href="../style/style.css">
     <style>
@@ -25,7 +28,7 @@
   <div id="map"></div>
 
   <div class="control-panel">
-
+    
     <h3 style="font-weight: bold; margin-top: 1rem; font-size: 28px;">Map Search</h3>
 
     <form>
@@ -70,6 +73,20 @@
       <button type="button" id="search-btn" class="btn">Start Search</button>
 
     </form>
+
+    <div class="toast">
+      <div class="toast-content">
+        <i id="success-icon" class="fas fa-solid fa-check toast-emblem" style="display: none;"></i>
+        <i id="error-icon" class="fas fa-solid fa-xmark toast-emblem" style="display: none;"></i>
+
+        <div class="toast-message">
+          <span class="text notif-msg"></span>
+          <span class="text notif-desc"></span>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+
+        <div class="toast-progress"></div>
+    </div>
 
   </div>
 
