@@ -280,15 +280,16 @@ function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
 
 
 
-/* ========= Event Listeners =========== */
+/* ========== Event Listeners =========== */
 
 // Initialize global variables
 let nodes = [];
 let adjacency = [];
+let map;
 
 $(document).ready(function() {
   // Initialize map
-  var map = L.map('map').setView([-6.891416087075806, 107.61033723180078], 16);
+  map = L.map('map').setView([-6.891416087075806, 107.61033723180078], 16);
 
   // Add tile layer
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -306,7 +307,9 @@ $(document).ready(function() {
       
         // Add nodes to map
         for (let node of data.nodes) {
-          L.marker([node.location.lat, node.location.long]).addTo(map).bindPopup(node.name);
+          let marker = L.marker([node.location.lat, node.location.long])
+          marker.addTo(map).bindPopup(node.name);
+
           // Add nodes to global variable
           nodes.push(node);
         }
@@ -328,6 +331,9 @@ $(document).ready(function() {
       
         // Add adjacency to global variable
         adjacency = data.adjacency;
+
+        // Adjust map view
+        map.fitBounds(L.latLngBounds(nodes.map(node => [node.location.lat, node.location.long])));
         
         // Add start nodes to dropdown
         for (let node of nodes) {
@@ -353,10 +359,16 @@ $(document).ready(function() {
 
     // Clear map
     map.eachLayer(layer => {
-      if (layer instanceof L.Polyline) {
+      if (layer instanceof L.Polyline || layer instanceof L.Marker) {
         map.removeLayer(layer);
       }
     });
+
+    // Readd markers
+    for (let node of nodes) {
+      let marker = L.marker([node.location.lat, node.location.long])
+      marker.addTo(map).bindPopup(node.name);
+    }
 
     // Readd edges to map
     for (let i = 0; i < adjacency.length; i++) {
@@ -382,13 +394,16 @@ $(document).ready(function() {
 
     console.log(path);
 
+    // Adjust map view
+    map.fitBounds(L.latLngBounds(nodes.map(node => [node.location.lat, node.location.long])));
+
     // Show edges of path on map
     let route = path.route;
     for (let i = 0; i < route.length - 1; i++) {
       let currNode = nodes.find(node => node.id == route[i].id);
       let nextNode = nodes.find(node => node.id == route[i+1].id);
       L.polyline([[currNode.location.lat, currNode.location.long], [nextNode.location.lat, nextNode.location.long]], {
-        color: 'red',
+        color: 'green',
         weight: 5,
         opacity: 0.8,
         smoothFactor: 1
@@ -396,9 +411,30 @@ $(document).ready(function() {
     }
 
     // Set start and end nodes marker to red
-    // let startMarker = map.getPane('markerPane').querySelector(`[title="${path.route[0].name}"]`);
-    // let endMarker = map.getPane('markerPane').querySelector(`[title="${path.route[path.route.length-1].name}"]`);
-    // startMarker.style.backgroundColor = 'red';
-    // endMarker.style.backgroundColor = 'red';
+    // Create a custom icon with a red marker
+    let redIcon = L.icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      tooltipAnchor: [16, -28],
+      shadowSize: [41, 41]
+    });
+
+    let startNodeObj = nodes.find(node => node.id == startNode);
+    let endNodeObj = nodes.find(node => node.id == endNode);
+
+    map.eachLayer(layer => {
+      if (layer instanceof L.Marker) {
+
+        let latlng = layer.getLatLng();
+        if (latlng.lat == startNodeObj.location.lat && latlng.lng == startNodeObj.location.long) {
+          layer.setIcon(redIcon);
+        } else if (latlng.lat == endNodeObj.location.lat && latlng.lng == endNodeObj.location.long) {
+          layer.setIcon(redIcon);
+        }
+      }
+    });
+
   });
 });
