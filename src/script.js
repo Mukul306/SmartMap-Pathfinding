@@ -297,6 +297,25 @@ $(document).ready(function() {
 
   // Load file
   $('#file-input').change(function() {
+    // Clear map
+    map.eachLayer(function(layer) {
+      if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+        map.removeLayer(layer);
+      }
+    });
+
+    // Clear dropdowns
+    $('#start-node').empty();
+    $('#end-node').empty();
+
+    // Hide result
+    document.getElementById("popup").style.display = "none";
+
+    // Clear global variables
+    nodes = [];
+    adjacency = [];
+
+    // Read file
     let file = $(this).prop('files')[0];
     if (file) {
       let reader = new FileReader();
