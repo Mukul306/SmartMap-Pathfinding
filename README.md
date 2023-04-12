@@ -3,6 +3,9 @@
 
 <img width="840" alt="image" src="https://user-images.githubusercontent.com/103266159/231497418-2b492062-cd98-481c-bb6e-6c6d52a31a96.png">
 
+## Site
+https://pathfinding-app.netlify.app/
+
 ## Description
 This application aims to find the nearest path between two location in a map. 
 
