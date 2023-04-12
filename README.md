@@ -68,6 +68,7 @@ To run the program, follow these steps:
         }
       }
     ],
+    "weighted": true,
     "adjacency": [
       [0, 1, 0, 0, 0, 7],
       [5, 0, 4, 0, 0, 0],
@@ -79,7 +80,8 @@ To run the program, follow these steps:
   }
 ```
 Note that if adjacency[i][j] == 0 then there's no edge between node id i and node id j
-and if adjacency[i][j] == d > 0 then there's an edge between node i and node j which has distance d
+and if adjacency[i][j] == d > 0 then there's an edge between node i and node j which has distance d.
+The "weighted" attribute is optional. If it is not included in the test file, the program will assume the haversine distance between the nodes as the edge cost.
 
 4. Open `index.html` located in  `/public` with Visual Studio Code
 5. Click Go Live in the bottom right corner in Visual Studio Code
