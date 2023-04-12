@@ -8,6 +8,7 @@ This application aims to find the nearest path between two location in a map.
 To use this program, you need to have the following installed on your system:
 1. Visual Studio Code
 2. Live server extension in vscode
+
 Make sure you have internet conneciton to run the program
 
 ## How to Run
@@ -79,6 +80,7 @@ To run the program, follow these steps:
 ```
 Note that if adjacency[i][j] == 0 then there's no edge between node id i and node id j
 and if adjacency[i][j] == d > 0 then there's an edge between node i and node j which has distance d
+
 4. Open `index.html` located in  `/public` with Visual Studio Code
 5. Click Go Live in the bottom right corner in Visual Studio Code
 6. Click choose file to insert the JSON input file
