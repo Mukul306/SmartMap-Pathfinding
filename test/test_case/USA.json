@@ -20,8 +20,8 @@
             "id": 2,
             "name": "New York",
             "location": {
-                "lat": 42.1657,
-                "long": -74.9481
+                "lat": 40.7128,
+                "long": -74.0060
             }
         },
         {
@@ -60,8 +60,8 @@
             "id": 7,
             "name": "Pennsylvania",
             "location": {
-                "lat": 40.5908,
-                "long": -77.2098
+                "lat": 41.2033,
+                "long": -77.1945
             }
         },
         {
