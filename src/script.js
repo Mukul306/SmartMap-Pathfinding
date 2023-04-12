@@ -1,283 +1,3 @@
-/* ========= Algorithms =========== */
-
-/**
- * @class TreeNode
- * @abstract This is a node for searching algorithms
- */
-class TreeNode {
-  constructor(parent, id, name, location, distFromStart) {
-      this.parent = parent
-      this.id = id
-      this.name = name
-      this.location = location
-      this.distFromStart = distFromStart
-  }
-
-  printInfo() {
-      console.log(this.id, this.name, this.location, this.priority)
-  }
-
-  getPathFromRoot() {
-      const path = []
-      let currentNode = this
-      while (currentNode !== null) {
-          path.unshift(currentNode)
-          currentNode = currentNode.parent
-      }
-      return path
-  }
-
-  /**
-   * A helper method to see if a node is already visited in this path to avoid going back and forth
-   *  (mondar-mandir)
-   * @param {int} nodeId 
-   * @returns ans
-   */
-  isNodeAlreadyVisited(nodeId) {
-      let currentNode = this
-      while (currentNode !== null) {
-          if (currentNode.id == nodeId) return true
-          currentNode = currentNode.parent
-      }
-      return false
-  }
-
-  /**
-   * @abstract
-   * Node priority depends on implementation of search algorithm.
-   ** UCS => priority = distance from start node
-   ** A*  => priority = distance from start node + heuristic (distance approx from current node to goal node)
-   */
-  get priority() {}
-}
-
-class UCSTreeNode extends TreeNode {
-  constructor(parent, id, name, location, distFromStart) {
-      super(parent, id, name, location, distFromStart)
-  }
-
-  get priority() {
-      return this.distFromStart
-  }
-}
-
-class AstarTreeNode extends TreeNode {
-  constructor(parent, id, name, location, distFromStart, goalNode, heuristic) {
-      super(parent, id, name, location, distFromStart)
-      this.goalNode = goalNode
-      this.heuristic = heuristic
-  }
-
-  get priority() {
-      return this.distFromStart + this.heuristic(this, this.goalNode)
-  }
-}
-
-/**
- * @class PriorityQueue
- * @abstract This is a priority queue for searching algorithms
- */
-class PriorityQueue {
-  constructor() {
-      this.list = []
-  }
-
-  isEmpty() {
-      return this.list.length == 0
-  }
-
-  enqueue(elmt) {
-      const index = this.list.findIndex((item) => item.priority > elmt.priority);
-      if (index === -1) {
-          this.list.push(elmt);
-      } 
-      else {
-          this.list.splice(index, 0, elmt);
-      }
-  }
-
-  dequeue() {
-      return this.list.shift()
-  }
-
-  printAllInfo() {
-      if (this.isEmpty()) {
-          console.log("kosong...")
-      }
-      else {
-          console.log("Queue elements: ")
-          this.list.forEach(elmt => elmt.printInfo())
-      }
-  }
-
-  minPriority() {
-      let min = Infinity
-      for (let elmt of this.list) {
-          if (elmt.priority < min) min = elmt.priority
-      }
-      return min
-  }
-}
-
-function euclideanDistance(nodeA, nodeB) {
-  const x = nodeA.location.x - nodeB.location.x;
-  const y = nodeA.location.y - nodeB.location.y;
-
-  return Math.sqrt(x ** 2 + y ** 2);
-}
-
-function haversineDistance(nodeA, nodeB) {
-  const earthRadius = 6371; // in kilometers
-
-  const lat1 = nodeA.location.lat;
-  const lon1 = nodeA.location.long;
-  const lat2 = nodeB.location.lat;
-  const lon2 = nodeB.location.long;
-
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-
-  const haversine =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) ** 2;
-
-  const distance = 2 * earthRadius * Math.asin(Math.sqrt(haversine));
-
-  return distance;
-}
-
-// TODO: validasi graf, validasi index graf, validasi apakah start terhubung ke goal
-
-/**
- * UCS (Uniform Cost Search) algorithm. Returns {route, cost}
- * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
- * @param {int} startID Starting node index in AdjMatrix
- * @param {int} goalID Goal node index in AdjMatrix
- * @param {{id, name, location}[]} nodesInfo Nodes information (from input file) 
- */
-function UCS(AdjMatrix, startID, goalID, nodesInfo) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
-
-    if (startID === goalID) {
-        return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
-    }
-    
-    // Initialize empty priority queue, set expand node to start node with no parent 
-    const prioqueue = new PriorityQueue()
-    const nodeCount = AdjMatrix.length
-    let expandNodeIdx = startID
-    const firstNodeObj = nodesInfo.find(node => node.id == startID)
-
-    let expandNode = new UCSTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 0)
-
-    /*
-     * In UCS, once expand node = goal node, searching process stops since priority queue is
-     * sorted by distance from start node to current node
-     */
-    let iteration = 0
-    do {
-        iteration++
-        // Check every neighbor of expand node, add to priority queue as live node
-        for (let i = 0; i < nodeCount; i++) {
-            const distance = AdjMatrix[expandNodeIdx][i]
-            if (distance !== 0) {
-                let liveNodeID = i
-                if (expandNode.isNodeAlreadyVisited(i)) continue
-                let liveNodeObj = nodesInfo.find(elmt => elmt.id == liveNodeID)
-                let distFromStart = expandNode.distFromStart + distance
-                const liveNode = new UCSTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
-                                                liveNodeObj.location, distFromStart)
-                prioqueue.enqueue(liveNode)
-            }
-        }
-
-        // Dequeue priority queue, set dequeued element as expand node
-        expandNode = prioqueue.dequeue()
-        expandNodeIdx = expandNode.id
-    }
-    while (expandNode.id != goalID)
-    
-    const routeList = expandNode.getPathFromRoot()
-    console.log("Number of iterations: " + iteration)
-    return {route: routeList, cost: expandNode.distFromStart}
-}
-
-/**
- * A* search algorithm. Returns {route, cost}
- * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
- * @param {int} startID Starting node index in AdjMatrix
- * @param {int} goalID Goal node index in AdjMatrix
- * @param {{id, name, location}[]} nodesInfo Nodes information (from input file)
- * @param {(node1, node2) => number} heuristic, node1 and node2 must at least contain {id, name, location}
- */
-function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
-
-    if (startID == goalID) {
-        return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
-    }
-
-    // Initialize empty priority queue, set expand node to start node with no parent 
-    // and best path so far to null 
-    const prioqueue = new PriorityQueue()
-    const nodeCount = AdjMatrix.length
-    let expandNodeIdx = startID
-    const firstNodeObj = nodesInfo.find(elmt => elmt.id == startID)
-    const goalNodeObj = nodesInfo.find(elmt => elmt.id == goalID)
-    let expandNode = new AstarTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 
-                                        0, goalNodeObj, heuristic)
-    let bestPath = null
-
-    /*
-     * In A*, searching process repeats until expand node = goal node and its distance
-     * from start node is less than/equal to approximate/predicted distance of any node in priority 
-     * queue to goal node. Priority is sorted by this formula:
-     * distance from start node to current node + heuristic distance from current node to goal node
-     */
-    let iteration = 0
-    do {
-        iteration++
-        // Check every neighbor of expand node, add to priority queue as live node
-        for (let i = 0; i < nodeCount; i++) {
-            const distance = AdjMatrix[expandNodeIdx][i]
-            if (distance !== 0) {
-                let liveNodeID = i
-                if (expandNode.isNodeAlreadyVisited(i)) continue
-                let liveNodeObj = nodesInfo.find(elmt => elmt.id == liveNodeID)
-                let distFromStart = expandNode.distFromStart + distance
-                const liveNode = new AstarTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
-                                                    liveNodeObj.location, distFromStart, goalNodeObj, heuristic)
-                prioqueue.enqueue(liveNode)
-            }
-        }
-
-        // Dequeue priority queue, set dequeued element as expand node
-        expandNode = prioqueue.dequeue()
-        expandNodeIdx = expandNode.id
-
-        // Update best path so far if needed
-        if (expandNode.id == goalID) {
-            if (bestPath == null || expandNode.distFromStart < bestPath.distFromStart) {
-                bestPath = expandNode
-            }
-        }
-    }
-    while (!(bestPath !== null && bestPath.distFromStart <= prioqueue.minPriority()))
-    
-    const routeList = bestPath.getPathFromRoot()
-    console.log("Number of iterations: " + iteration)
-    return {route: routeList, cost: bestPath.distFromStart}
-}
-
-
-
-
 /* ========== Event Listeners =========== */
 
 // Initialize global variables
@@ -557,3 +277,291 @@ $(document).ready(function() {
 
   });
 });
+
+
+/* ========= Algorithms =========== */
+/*
+ * The data structure and algorithms are placed in the script as the web environment in plain 
+ * HTML CSS JS does not support imports from other modules. If you want to read and navigate 
+ * through the data structure and algorithms, it is recommended to check out src/modules
+ * 
+ */
+
+/**
+ * @class TreeNode
+ * @abstract This is a node for searching algorithms
+ */
+class TreeNode {
+  constructor(parent, id, name, location, distFromStart) {
+      this.parent = parent
+      this.id = id
+      this.name = name
+      this.location = location
+      this.distFromStart = distFromStart
+  }
+
+  printInfo() {
+      console.log(this.id, this.name, this.location, this.priority)
+  }
+
+  getPathFromRoot() {
+      const path = []
+      let currentNode = this
+      while (currentNode !== null) {
+          path.unshift(currentNode)
+          currentNode = currentNode.parent
+      }
+      return path
+  }
+
+  /**
+   * A helper method to see if a node is already visited in this path to avoid going back and forth
+   *  (mondar-mandir)
+   * @param {int} nodeId 
+   * @returns ans
+   */
+  isNodeAlreadyVisited(nodeId) {
+      let currentNode = this
+      while (currentNode !== null) {
+          if (currentNode.id == nodeId) return true
+          currentNode = currentNode.parent
+      }
+      return false
+  }
+
+  /**
+   * @abstract
+   * Node priority depends on implementation of search algorithm.
+   ** UCS => priority = distance from start node
+   ** A*  => priority = distance from start node + heuristic (distance approx from current node to goal node)
+   */
+  get priority() {}
+}
+
+class UCSTreeNode extends TreeNode {
+  constructor(parent, id, name, location, distFromStart) {
+      super(parent, id, name, location, distFromStart)
+  }
+
+  get priority() {
+      return this.distFromStart
+  }
+}
+
+class AstarTreeNode extends TreeNode {
+  constructor(parent, id, name, location, distFromStart, goalNode, heuristic) {
+      super(parent, id, name, location, distFromStart)
+      this.goalNode = goalNode
+      this.heuristic = heuristic
+  }
+
+  get priority() {
+      return this.distFromStart + this.heuristic(this, this.goalNode)
+  }
+}
+
+/**
+ * @class PriorityQueue
+ * @abstract This is a priority queue for searching algorithms
+ */
+class PriorityQueue {
+  constructor() {
+      this.list = []
+  }
+
+  isEmpty() {
+      return this.list.length == 0
+  }
+
+  enqueue(elmt) {
+      const index = this.list.findIndex((item) => item.priority > elmt.priority);
+      if (index === -1) {
+          this.list.push(elmt);
+      } 
+      else {
+          this.list.splice(index, 0, elmt);
+      }
+  }
+
+  dequeue() {
+      return this.list.shift()
+  }
+
+  printAllInfo() {
+      if (this.isEmpty()) {
+          console.log("kosong...")
+      }
+      else {
+          console.log("Queue elements: ")
+          this.list.forEach(elmt => elmt.printInfo())
+      }
+  }
+
+  minPriority() {
+      let min = Infinity
+      for (let elmt of this.list) {
+          if (elmt.priority < min) min = elmt.priority
+      }
+      return min
+  }
+}
+
+function euclideanDistance(nodeA, nodeB) {
+  const x = nodeA.location.x - nodeB.location.x;
+  const y = nodeA.location.y - nodeB.location.y;
+
+  return Math.sqrt(x ** 2 + y ** 2);
+}
+
+function haversineDistance(nodeA, nodeB) {
+  const earthRadius = 6371; // in kilometers
+
+  const lat1 = nodeA.location.lat;
+  const lon1 = nodeA.location.long;
+  const lat2 = nodeB.location.lat;
+  const lon2 = nodeB.location.long;
+
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+
+  const haversine =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+
+  const distance = 2 * earthRadius * Math.asin(Math.sqrt(haversine));
+
+  return distance;
+}
+
+// TODO: validasi graf, validasi index graf, validasi apakah start terhubung ke goal
+
+/**
+ * UCS (Uniform Cost Search) algorithm. Returns {route, cost}
+ * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
+ * @param {int} startID Starting node index in AdjMatrix
+ * @param {int} goalID Goal node index in AdjMatrix
+ * @param {{id, name, location}[]} nodesInfo Nodes information (from input file) 
+ */
+function UCS(AdjMatrix, startID, goalID, nodesInfo) {
+    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
+
+    // TODO: validasi apakah start node terhubung dengan goal node
+
+    if (startID === goalID) {
+        return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
+    }
+    
+    // Initialize empty priority queue, set expand node to start node with no parent 
+    const prioqueue = new PriorityQueue()
+    const nodeCount = AdjMatrix.length
+    let expandNodeIdx = startID
+    const firstNodeObj = nodesInfo.find(node => node.id == startID)
+
+    let expandNode = new UCSTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 0)
+
+    /*
+     * In UCS, once expand node = goal node, searching process stops since priority queue is
+     * sorted by distance from start node to current node
+     */
+    let iteration = 0
+    do {
+        iteration++
+        // Check every neighbor of expand node, add to priority queue as live node
+        for (let i = 0; i < nodeCount; i++) {
+            const distance = AdjMatrix[expandNodeIdx][i]
+            if (distance !== 0) {
+                let liveNodeID = i
+                if (expandNode.isNodeAlreadyVisited(i)) continue
+                let liveNodeObj = nodesInfo.find(elmt => elmt.id == liveNodeID)
+                let distFromStart = expandNode.distFromStart + distance
+                const liveNode = new UCSTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
+                                                liveNodeObj.location, distFromStart)
+                prioqueue.enqueue(liveNode)
+            }
+        }
+
+        // Dequeue priority queue, set dequeued element as expand node
+        expandNode = prioqueue.dequeue()
+        expandNodeIdx = expandNode.id
+    }
+    while (expandNode.id != goalID)
+    
+    const routeList = expandNode.getPathFromRoot()
+    console.log("Number of iterations: " + iteration)
+    return {route: routeList, cost: expandNode.distFromStart}
+}
+
+/**
+ * A* search algorithm. Returns {route, cost}
+ * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
+ * @param {int} startID Starting node index in AdjMatrix
+ * @param {int} goalID Goal node index in AdjMatrix
+ * @param {{id, name, location}[]} nodesInfo Nodes information (from input file)
+ * @param {(node1, node2) => number} heuristic, node1 and node2 must at least contain {id, name, location}
+ */
+function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
+    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
+
+    // TODO: validasi apakah start node terhubung dengan goal node
+
+    if (startID == goalID) {
+        return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
+    }
+
+    // Initialize empty priority queue, set expand node to start node with no parent 
+    // and best path so far to null 
+    const prioqueue = new PriorityQueue()
+    const nodeCount = AdjMatrix.length
+    let expandNodeIdx = startID
+    const firstNodeObj = nodesInfo.find(elmt => elmt.id == startID)
+    const goalNodeObj = nodesInfo.find(elmt => elmt.id == goalID)
+    let expandNode = new AstarTreeNode(null, expandNodeIdx, firstNodeObj.name, firstNodeObj.location, 
+                                        0, goalNodeObj, heuristic)
+    let bestPath = null
+
+    /*
+     * In A*, searching process repeats until expand node = goal node and its distance
+     * from start node is less than/equal to approximate/predicted distance of any node in priority 
+     * queue to goal node. Priority is sorted by this formula:
+     * distance from start node to current node + heuristic distance from current node to goal node
+     */
+    let iteration = 0
+    do {
+        iteration++
+        // Check every neighbor of expand node, add to priority queue as live node
+        for (let i = 0; i < nodeCount; i++) {
+            const distance = AdjMatrix[expandNodeIdx][i]
+            if (distance !== 0) {
+                let liveNodeID = i
+                if (expandNode.isNodeAlreadyVisited(i)) continue
+                let liveNodeObj = nodesInfo.find(elmt => elmt.id == liveNodeID)
+                let distFromStart = expandNode.distFromStart + distance
+                const liveNode = new AstarTreeNode(expandNode, liveNodeID, liveNodeObj.name, 
+                                                    liveNodeObj.location, distFromStart, goalNodeObj, heuristic)
+                prioqueue.enqueue(liveNode)
+            }
+        }
+
+        // Dequeue priority queue, set dequeued element as expand node
+        expandNode = prioqueue.dequeue()
+        expandNodeIdx = expandNode.id
+
+        // Update best path so far if needed
+        if (expandNode.id == goalID) {
+            if (bestPath == null || expandNode.distFromStart < bestPath.distFromStart) {
+                bestPath = expandNode
+            }
+        }
+    }
+    while (!(bestPath !== null && bestPath.distFromStart <= prioqueue.minPriority()))
+    
+    const routeList = bestPath.getPathFromRoot()
+    console.log("Number of iterations: " + iteration)
+    return {route: routeList, cost: bestPath.distFromStart}
+}
+
+
+
+
