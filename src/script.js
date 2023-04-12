@@ -320,7 +320,6 @@ $(document).ready(function() {
     if (!isWeighted) { // if adjacency matrix in JSON is not weighted, find the distance manually
       for (let i = 0; i < adjacency.length; i++) {
         for (let j = 0; j < adjacency[0].length ;j++) {
-          console.log(weightedAdjacency[i][j] + ' ')
           if (adjacency[i][j] === 1) {
             let iLocation = nodes.find(node => node.id === i);
             let jLocation = nodes.find(node => node.id === j);
@@ -553,8 +552,6 @@ function haversineDistance(nodeA, nodeB) {
   return distance;
 }
 
-// TODO: validasi graf, validasi index graf, validasi apakah start terhubung ke goal
-
 /**
  * UCS (Uniform Cost Search) algorithm. Returns {route, cost}
  * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
@@ -563,10 +560,6 @@ function haversineDistance(nodeA, nodeB) {
  * @param {{id, name, location}[]} nodesInfo Nodes information (from input file) 
  */
 function UCS(AdjMatrix, startID, goalID, nodesInfo) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
-
     if (startID === goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
     }
@@ -620,10 +613,6 @@ function UCS(AdjMatrix, startID, goalID, nodesInfo) {
  * @param {(node1, node2) => number} heuristic, node1 and node2 must at least contain {id, name, location}
  */
 function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
-
     if (startID == goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
     }

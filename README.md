@@ -66,20 +66,47 @@ To run the program, follow these steps:
             "lat": -6.893745574703283, 
             "long": 107.61297519726801
         }
+      },
+      {
+        "id": 6,
+        "name": "Simpang Teuku Umar",
+        "location": {
+            "lat": -6.891520, 
+            "long": 107.613316
+        }
+      },
+      {
+        "id": 7,
+        "name": "Jl. Dipati Ukur",
+        "location": {
+            "lat": -6.892398, 
+            "long": 107.617873
+        }
       }
+
     ],
+    "weighted": false,
     "adjacency": [
-      [0, 1, 0, 0, 0, 7],
-      [5, 0, 4, 0, 0, 0],
-      [0, 1, 0, 3, 0, 0],
-      [0, 0, 1, 0, 3s, 1],
-      [0, 0, 0, 2, 0, 0],
-      [9, 0, 0, 8, 0, 0]
+      [0, 1, 0, 0, 0, 1, 0, 0],
+      [1, 0, 1, 0, 0, 0, 0, 0],
+      [0, 1, 0, 1, 0, 0, 0, 0],
+      [0, 0, 1, 0, 1, 0, 1, 0],
+      [0, 0, 0, 1, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 1, 0, 1, 0, 1],
+      [0, 0, 0, 0, 1, 0, 1, 0]
     ]
   }
 ```
-Note that if adjacency[i][j] == 0 then there's no edge between node id i and node id j
-and if adjacency[i][j] == d > 0 then there's an edge between node i and node j which has distance d
+NOTES:
+* if `"weighted" == false`: 
+  * if `adjacency[i][j] == 0` then there's no edge between node i and node j
+  * if `adjacency[i][j] == 1` then there is an edge between node i and node j
+  * `adjacency` elements can only be either 0 or 1
+* if `"weighted" == true`:
+  * if `adjacency[i][j] == 0` then there's no edge between node i and node j
+  * if `adjacency[i][j] > 0` than it's the distance between node i and node j
+  * `adjacency` elements can only be >= 0
 
 4. Open `index.html` located in  `/public` with Visual Studio Code
 5. Click Go Live in the bottom right corner in Visual Studio Code
@@ -93,13 +120,13 @@ and if adjacency[i][j] == d > 0 then there's an edge between node i and node j w
 ```
 │   LICENSE
 │   README.md
-│
+│   
 ├───public
 │       index.html
-│
+│       
 ├───src
 │   │   script.js
-│   │
+│   │   
 │   └───modules
 │           Astar.js
 │           GraphUtil.js
@@ -109,11 +136,22 @@ and if adjacency[i][j] == d > 0 then there's an edge between node i and node j w
 │
 ├───style
 │       style.css
-│
+│       
 └───test
+    │   input_converter.py
+    │   
     ├───test_case
-    │       itb.json
-    │       romania.json
+    │   ├───invalid_cases
+    │   │       invalidID.json
+    │   │       invalidLocation.json
+    │   │       noAdjacency.json
+    │   │       singleNode.json
+    │   │       syntaxError.json
+    │   │
+    │   └───valid_cases
+    │           ITB.json
+    │           Romania.json
+    │           USA.json
     │
     └───unit_testing
             Queue_Node.js
