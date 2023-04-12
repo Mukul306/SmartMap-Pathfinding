@@ -393,6 +393,7 @@
             }
         }
     ],
+    "weighted": false,
     "adjacency": [
         [
             0,
