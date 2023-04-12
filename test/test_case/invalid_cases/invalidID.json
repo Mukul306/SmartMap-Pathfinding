@@ -1,0 +1,25 @@
+{
+    "nodes": [
+      {
+        "id": 0,
+        "name": "Test",
+        "location": {
+            "lat": 0,
+            "long": 0
+        }
+      },
+      {
+        "id": 3,
+        "name": "Test2",
+        "location": {
+            "lat": 0,
+            "long": 0
+        }
+      }
+    ],
+    "weighted": false,
+    "adjacency": [
+        [0, 1],
+        [1, 0]
+    ]
+}

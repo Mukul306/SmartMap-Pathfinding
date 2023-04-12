@@ -18,6 +18,49 @@ let addRule = (function (style) {
   };
 })(document.createElement("style"));
 
+// Initialize exceptions
+class InvalidFileFormat extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidFileFormat";
+  }
+}
+
+class InvalidNodeID extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidNodeID";
+  }
+}
+
+class InvalidNodeName extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidNodeName";
+  }
+}
+
+class InvalidNodeLocation extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidNodeLocation";
+  }
+}
+
+class InvalidEdge extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidEdge";
+  }
+}
+
+class InvalidAdjacencyList extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidAdjacencyList";
+  }
+}
+
 // Function to show success toast
 function showSuccessToast(message, description) {
   // Hide error icon
@@ -126,11 +169,57 @@ $(document).ready(function() {
     if (file) {
       let reader = new FileReader();
       reader.onload = function(e) {
-        let data = JSON.parse(e.target.result);
+        let data;
+        try {
+          data = JSON.parse(e.target.result);
+        } catch (e) {
+          showErrorToast("Invalid file", "Please upload a valid JSON file.");
+          return;
+        }
       
         // Add nodes to map
         try {
           for (let node of data.nodes) {
+            // Check if node and adjacencies exists
+            if (data === undefined || node === undefined || data.adjacency === undefined) {
+              throw new InvalidFileFormat("Node or adjacency list is undefined.");
+            }
+
+            // Check if there is more than one node
+            if (data.nodes.length < 2) {
+              throw new InvalidFileFormat("There must be at least two nodes.");
+            }
+
+            // Check if node already exists
+            if (nodes.some(n => n.id === node.id) || node.id === undefined) {
+              throw new InvalidNodeID(`Node with ID ${node.id} already exists.`);
+            }
+
+            // Check if node ID is valid
+            if (node.id < 0 || node.id > data.adjacency.length - 1) {
+              throw new InvalidNodeID(`Node with ID ${node.id} is invalid.`);
+            }
+
+            // Check if node has valid location
+            if (node.location.lat === undefined || node.location.long === undefined || node.location.lat < -90 || node.location.lat > 90 || node.location.long < -180 || node.location.long > 180) {
+              throw new InvalidNodeLocation(`Node with ID ${node.id} has invalid location.`);
+            }
+
+            // Check if node has valid name
+            if (node.name === undefined) {
+              throw new InvalidNodeName(`Node with ID ${node.id} has invalid name.`);
+            }
+
+            // Check if node has valid edges
+            if (data.adjacency[node.id] === undefined) {
+              throw new InvalidEdge(`Node with ID ${node.id} has invalid edges.`);
+            }
+
+            // Check if adjacency list is valid
+            if (data.adjacency.length !== data.nodes.length) {
+              throw new InvalidAdjacencyList("Adjacency list is invalid.");
+            }
+
             let marker = L.marker([node.location.lat, node.location.long])
             marker.addTo(map).bindPopup(node.name);
   
@@ -152,7 +241,19 @@ $(document).ready(function() {
             }
           }
         } catch (e) {
-          showErrorToast("Error", "Invalid file format");
+          if (e instanceof InvalidFileFormat || e instanceof InvalidNodeID || e instanceof InvalidNodeLocation || e instanceof InvalidNodeName || e instanceof InvalidEdge || e instanceof InvalidAdjacencyList) {
+            showErrorToast("Error", e.message);
+          } else {
+            showErrorToast("Error", "Invalid file format");
+          }
+          
+          // Clear map
+          map.eachLayer(function(layer) {
+            if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+              map.removeLayer(layer);
+            }
+          });
+
           return;
         }
       
@@ -249,7 +350,7 @@ $(document).ready(function() {
 
     // Set the text of the path elements
     shortestPath.textContent = routeNames.join(' → ');
-    totalCost.textContent = cost;
+    totalCost.textContent = cost.toFixed(2) + " km";
 
     // Adjust map view
     map.fitBounds(L.latLngBounds(nodes.map(node => [node.location.lat, node.location.long])));
