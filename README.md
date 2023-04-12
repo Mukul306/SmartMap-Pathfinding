@@ -100,7 +100,6 @@ To run the program, follow these steps:
     ]
   }
 ```
-<<<<<<< HEAD
 NOTES:
 * if `"weighted" == false`: 
   * if `adjacency[i][j] == 0` then there's no edge between node i and node j
