@@ -523,13 +523,6 @@ class PriorityQueue {
   }
 }
 
-function euclideanDistance(nodeA, nodeB) {
-  const x = nodeA.location.x - nodeB.location.x;
-  const y = nodeA.location.y - nodeB.location.y;
-
-  return Math.sqrt(x ** 2 + y ** 2);
-}
-
 function haversineDistance(nodeA, nodeB) {
   const earthRadius = 6371; // in kilometers
 

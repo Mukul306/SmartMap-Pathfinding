@@ -10,9 +10,6 @@ const {AstarTreeNode} = require('./TreeNode')
  * @param {(node1, node2) => number} heuristic, node1 and node2 must at least contain {id, name, location}
  */
 function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
 
     if (startID === goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}

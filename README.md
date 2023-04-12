@@ -1,5 +1,7 @@
 # Algorithm Strategies Course Project
-## UCS and A-Star Path Finding Algorithm
+## Path Finding with UCS and A-Star Algorithm
+
+<img width="840" alt="image" src="https://user-images.githubusercontent.com/103266159/231497418-2b492062-cd98-481c-bb6e-6c6d52a31a96.png">
 
 ## Description
 This application aims to find the nearest path between two location in a map. 
@@ -98,6 +100,7 @@ To run the program, follow these steps:
     ]
   }
 ```
+<<<<<<< HEAD
 NOTES:
 * if `"weighted" == false`: 
   * if `adjacency[i][j] == 0` then there's no edge between node i and node j

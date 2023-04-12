@@ -9,9 +9,6 @@ const {UCSTreeNode} = require('./TreeNode.js')
  * @param {{id, name, location}[]} nodesInfo Nodes information (from input file) 
  */
 function UCS(AdjMatrix, startID, goalID, nodesInfo) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
 
     if (startID === goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id === startID)], cost: 0}
