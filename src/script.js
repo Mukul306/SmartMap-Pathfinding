@@ -4,6 +4,7 @@
 let nodes = [];
 let adjacency = [];
 let map;
+let isWeighted;
 const toast = document.querySelector(".toast");
 const closeIcon = document.querySelector(".close");
 const toastProgress = document.querySelector(".toast-progress");
@@ -158,6 +159,8 @@ $(document).ready(function() {
         // Add adjacency to global variable
         adjacency = data.adjacency;
 
+        isWeighted = data.weighted;
+
         // Adjust map view
         map.fitBounds(L.latLngBounds(nodes.map(node => [node.location.lat, node.location.long])));
         
@@ -212,11 +215,25 @@ $(document).ready(function() {
       }
     }
 
+    let weightedAdjacency = JSON.parse(JSON.stringify(adjacency));
+    if (!isWeighted) { // if adjacency matrix in JSON is not weighted, find the distance manually
+      for (let i = 0; i < adjacency.length; i++) {
+        for (let j = 0; j < adjacency[0].length ;j++) {
+          console.log(weightedAdjacency[i][j] + ' ')
+          if (adjacency[i][j] === 1) {
+            let iLocation = nodes.find(node => node.id === i);
+            let jLocation = nodes.find(node => node.id === j);
+            weightedAdjacency[i][j] = haversineDistance(iLocation, jLocation);
+          }
+        }
+      }
+    }
+
     // Perform search
     if (searchAlgorithm === 'UCS') {
-      path = UCS(adjacency, startNode, endNode, nodes);
+      path = UCS(weightedAdjacency, startNode, endNode, nodes);
     } else {
-      path = Astar(adjacency, startNode, endNode, nodes, haversineDistance);
+      path = Astar(weightedAdjacency, startNode, endNode, nodes, haversineDistance);
     }
 
     let route = path.route;
