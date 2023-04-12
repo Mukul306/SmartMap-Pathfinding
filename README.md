@@ -2,7 +2,7 @@
 ## UCS and A-Star Path Finding Algorithm
 
 ## Description
-
+This application aims to find the nearest path between two location in a map. 
 
 ## Getting Started
 To use this program, you need to have the following installed on your system:
@@ -10,16 +10,113 @@ To use this program, you need to have the following installed on your system:
 
 ## How to Run
 To run the program, follow these steps:
+1. Install the prerequisites
+2. Clone or download the repository to your local machine
+3. Create an input file in JSON format and place it in `/test` folder. Here's a sample of a valid input file.
+```
+{
+    "nodes": [
+      {
+        "id": 0,
+        "name": "Gerbang Utama ITB",
+        "location": {
+            "lat": -6.893141563096119,
+            "long": 107.61045955255435
+        }
+      },
+      {
+        "id": 1,
+        "name": "Gerbang Sipil ITB",
+        "location": {
+            "lat": -6.893692521627452,
+            "long": 107.60847090893053
+        }
+      },
+      {
+        "id": 2,
+        "name": "Taman Sari",
+        "location": {
+            "lat": -6.887861511364462,
+            "long": 107.60823967129984
+        }
+      },
+      {
+        "id": 3,
+        "name": "Dayang Sumbi",
+        "location": {
+            "lat": -6.887402373652822,
+            "long": 107.6135812605685
+        }
+      },
+      {
+        "id": 4,
+        "name": "Simpang Dago",
+        "location": {
+            "lat": -6.88525272657153,
+            "long": 107.6136453838138
+        }
+      },
+      {
+        "id": 5,
+        "name": "Jl. Djuanda",
+        "location": {
+            "lat": -6.893745574703283, 
+            "long": 107.61297519726801
+        }
+      }
+    ],
+    "adjacency": [
+      [0, 1, 0, 0, 0, 1],
+      [1, 0, 1, 0, 0, 0],
+      [0, 1, 0, 1, 0, 0],
+      [0, 0, 1, 0, 1, 1],
+      [0, 0, 0, 1, 0, 0],
+      [1, 0, 0, 1, 0, 0]
+    ]
+  }
+```
 
+. Open `index.html` located in  `/public` with Visual Studio Code
+. Click Go Live in the bottom right corner in Visual Studio Code
+. 
 
 ## Usage
 
 
 ## Project Structure
-
+```
+│   LICENSE
+│   README.md
+│
+├───public
+│       index.html
+│
+├───src
+│   │   script.js
+│   │
+│   └───modules
+│           Astar.js
+│           GraphUtil.js
+│           PriorityQueue.js
+│           TreeNode.js
+│           UCS.js
+│
+├───style
+│       style.css
+│
+└───test
+    ├───test_case
+    │       itb.json
+    │       romania.json
+    │
+    └───unit_testing
+            Queue_Node.js
+            UCS_Astar.js
+```
 
 ## Implementation Details
-
+In both algorithm, the program starts by visiting the starting node and expanding all of its neighbors.
+All of the expanded nodes will be put into a priority queue then the elements of the priority queue will be dequeued one by one and expanded until an optimal path is found. The main difference between UCS (Uniform Cost Search) and A* (A star) is that the elements of the priority queue in UCS are sorted by their distance from starting node, while in A* they are sorted by their distance from starting node + estimate distance to goal node.
 
 ## Author
 - [Enrique Alifio Ditya - 13521142](https://github.com/AlifioDitya) 
