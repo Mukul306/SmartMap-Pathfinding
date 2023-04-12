@@ -524,13 +524,6 @@ class PriorityQueue {
   }
 }
 
-function euclideanDistance(nodeA, nodeB) {
-  const x = nodeA.location.x - nodeB.location.x;
-  const y = nodeA.location.y - nodeB.location.y;
-
-  return Math.sqrt(x ** 2 + y ** 2);
-}
-
 function haversineDistance(nodeA, nodeB) {
   const earthRadius = 6371; // in kilometers
 
@@ -553,8 +546,6 @@ function haversineDistance(nodeA, nodeB) {
   return distance;
 }
 
-// TODO: validasi graf, validasi index graf, validasi apakah start terhubung ke goal
-
 /**
  * UCS (Uniform Cost Search) algorithm. Returns {route, cost}
  * @param {number[][]} AdjMatrix Weighted adjacency matrix (from input file)
@@ -563,9 +554,6 @@ function haversineDistance(nodeA, nodeB) {
  * @param {{id, name, location}[]} nodesInfo Nodes information (from input file) 
  */
 function UCS(AdjMatrix, startID, goalID, nodesInfo) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
 
     if (startID === goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}
@@ -620,9 +608,6 @@ function UCS(AdjMatrix, startID, goalID, nodesInfo) {
  * @param {(node1, node2) => number} heuristic, node1 and node2 must at least contain {id, name, location}
  */
 function Astar(AdjMatrix, startID, goalID, nodesInfo, heuristic) {
-    // TODO: validasi AdjMatrix, dan validasi apakah 0 <= startID, goalID < AdjMatrix.length
-
-    // TODO: validasi apakah start node terhubung dengan goal node
 
     if (startID == goalID) {
         return {route: [nodesInfo.find(elmt => elmt.id == startID)], cost: 0}

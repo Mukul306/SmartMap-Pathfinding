@@ -28,5 +28,3 @@ function haversineDistance(nodeA, nodeB) {
   }
 
   module.exports = {euclideanDistance, haversineDistance}
-
-// TODO: validasi graf, validasi index graf, validasi apakah start terhubung ke goal
