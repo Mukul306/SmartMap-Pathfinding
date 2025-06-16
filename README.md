@@ -163,13 +163,5 @@ NOTES:
             UCS_Astar.js
 ```
 
-## Implementation Details
-In both algorithm, the program starts by visiting the starting node and expanding all of its neighbors.
-All of the expanded nodes will be put into a priority queue then the elements of the priority queue will be dequeued one by one and expanded until an optimal path is found. The main difference between UCS (Uniform Cost Search) and A* (A star) is that the elements of the priority queue in UCS are sorted by their distance from starting node, while in A* they are sorted by their distance from starting node + estimate distance to goal node.
-
-## Author
-- [Enrique Alifio Ditya - 13521142](https://github.com/AlifioDitya) 
-- [Haziq Abiyyu Mahdy - 13521170](https://github.com/haziqam) 
-
 ## Made With
 HTML, CSS, JS
