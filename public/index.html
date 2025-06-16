@@ -1,94 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Search</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Map Search</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    
-    <!-- Google API and Leaflet JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
-    <!-- CSS Stylesheet and Font -->
-    <link rel="stylesheet" href="/style/style.css">
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;700&display=swap');
-    </style>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
 
-    <link rel="shortcut icon" href="favicon/favicon.ico">
-    <link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/style/style.css">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif">
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
 </head>
+
 <body>
 
-  <div id="map"></div>
+  <div id="map" style="height: 100vh; width: 100%;"></div>
 
   <div class="control-panel">
-    
-    <h3 style="font-weight: bold; margin-top: 1rem; font-size: 28px;">Map Search</h3>
+    <h3 class="panel-title">Map Search</h3>
 
-    <form>
+    <form id="map-form" novalidate>
 
+      <!-- Load Data -->
       <div class="form-group load-data">
-        <label for="file-input" class="form-label">Load Data</label>
+        <label for="file-input">Load Data</label>
         <input type="file" id="file-input" accept=".json" hidden>
+        <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('file-input').click();">
+          Choose File
+        </button>
       </div>
 
-      <div class="selectors">
-        <div class="form-group">
-          <label for="search-algorithm" class="form-label">Search Algorithm</label>
-          <select id="search-algorithm" class="form-control">
-            <option value="UCS">UCS</option>
-            <option value="A*">A*</option>
-          </select>
-        </div>
+      <!-- Algorithm Selection -->
+      <div class="form-group">
+        <label for="search-algorithm">Search Algorithm</label>
+        <select id="search-algorithm" class="form-control">
+          <option value="UCS">UCS</option>
+          <option value="A*">A*</option>
+        </select>
+      </div>
 
+      <!-- Start & End Node Selection -->
+      <div class="form-group">
+        <label for="start-node">Start Node</label>
+        <select id="start-node" class="form-control"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="end-node">End Node</label>
+        <select id="end-node" class="form-control"></select>
+      </div>
+
+      <!-- Result Popup -->
+      <div id="popup" style="display: none; margin-top: 1rem;">
         <div class="form-group">
-          <label for="start-node" class="form-label">Start Node</label>
-          <select id="start-node" class="form-control"></select>
+          <label>Shortest Path</label>
+          <p id="shortest-path"></p>
         </div>
-  
         <div class="form-group">
-          <label for="end-node" class="form-label">End Node</label>
-          <select id="end-node" class="form-control"></select>
+          <label>Total Cost</label>
+          <p id="total-cost"></p>
         </div>
       </div>
 
-      <div id="popup" style="display: none; margin-bottom: 2rem;">
-        <div class="form-group">
-          <label for="shortest-path" class="form-label">Shortest Path</label>
-          <p id="shortest-path">
-        </div>
-        
-        <div class="form-group">
-          <label for="total-cost" class="form-label">Total Cost</label>
-          <p id="total-cost">
-        </div>
-      </div>
-
-      <button type="button" id="search-btn" class="btn">Start Search</button>
+      <!-- Start Search Button -->
+      <button type="button" id="search-btn" class="btn btn-success">Start Search</button>
 
     </form>
 
+    <!-- Toast Notification -->
     <div class="toast">
       <div class="toast-content">
-        <i id="success-icon" class="fas fa-solid fa-check toast-emblem" style="display: none;"></i>
-        <i id="error-icon" class="fas fa-solid fa-xmark toast-emblem" style="display: none;"></i>
+        <i id="success-icon" class="fas fa-check toast-emblem" style="display: none;"></i>
+        <i id="error-icon" class="fas fa-xmark toast-emblem" style="display: none;"></i>
 
         <div class="toast-message">
           <span class="text notif-msg"></span>
           <span class="text notif-desc"></span>
         </div>
         <i class="fa-solid fa-xmark close"></i>
-
         <div class="toast-progress"></div>
+      </div>
     </div>
 
   </div>
@@ -97,4 +113,5 @@
   <script src="/src/script.js" type="module"></script>
 
 </body>
+
 </html>
